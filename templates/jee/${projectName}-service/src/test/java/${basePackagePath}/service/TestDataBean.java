@@ -1,15 +1,15 @@
 package ${basePackage}.service;
 
-import ${basePackage}.persistence.entity.NoteEntity;
-import idx.persistence.repository.Repository;
-import idx.persistence.testbase.cdi.TransactionalWrapper;
-import org.slf4j.Logger;
+        import ${basePackage}.persistence.entity.NoteEntity;
+        import ${basePackage}.persistence.repository.NoteRepository;
+        import idx.persistence.testbase.cdi.TransactionalWrapper;
+        import org.slf4j.Logger;
 
-import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
-import javax.ejb.Singleton;
-import javax.ejb.Startup;
-import javax.inject.Inject;
+        import javax.annotation.PostConstruct;
+        import javax.annotation.PreDestroy;
+        import javax.ejb.Singleton;
+        import javax.ejb.Startup;
+        import javax.inject.Inject;
 
 /**
  * Creates test data for the persistence tests.
@@ -19,7 +19,7 @@ import javax.inject.Inject;
 public class TestDataBean {
 
     @Inject
-    private Repository<NoteEntity, Long> repository;
+    private NoteRepository repository;
 
     @Inject
     TransactionalWrapper transactionalWrapper;
@@ -48,8 +48,6 @@ public class TestDataBean {
     @PreDestroy
     public void cleanupTestData() throws Exception {
         logger.info("Destroying test data");
-        for (NoteEntity p : repository.list()) {
-            repository.delete(p.getId());
-        }
+        repository.deleteAll();
     }
 }

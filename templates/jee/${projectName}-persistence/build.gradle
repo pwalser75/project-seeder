@@ -1,8 +1,8 @@
 description = '${projectDescription} Persistence'
 dependencies {
     compileOnly libraries.jee
+    compile libraries.springDataJPA
     compile libraries.idx.persistence_api
-    compile libraries.idx.persistence_jpa
     compile project(':${projectName}-api')
 
     testCompile libraries.idx.persistence_testbase

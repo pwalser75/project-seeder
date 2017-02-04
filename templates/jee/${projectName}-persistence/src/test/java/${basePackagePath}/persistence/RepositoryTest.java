@@ -1,19 +1,19 @@
 package ${basePackage}.persistence;
 
-import ${basePackage}.persistence.entity.NoteEntity;
-import idx.persistence.repository.Repository;
-import org.apache.deltaspike.testcontrol.api.junit.CdiTestRunner;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+        import ${basePackage}.persistence.entity.NoteEntity;
+        import ${basePackage}.persistence.repository.NoteRepository;
+        import org.apache.deltaspike.testcontrol.api.junit.CdiTestRunner;
+        import org.junit.Assert;
+        import org.junit.Test;
+        import org.junit.runner.RunWith;
 
-import javax.inject.Inject;
+        import javax.inject.Inject;
 
 @RunWith(CdiTestRunner.class)
 public class RepositoryTest {
 
     @Inject
-    private Repository<NoteEntity, Long> repository;
+    private NoteRepository repository;
 
     @Test
     public void testCRUD() {
@@ -28,7 +28,7 @@ public class RepositoryTest {
         Assert.assertNotNull(note.getId());
 
         // read
-        note = repository.get(note.getId());
+        note = repository.findOne(note.getId());
         Assert.assertEquals("Aloha", note.getText());
 
         // update
@@ -37,7 +37,7 @@ public class RepositoryTest {
 
         // delete
         repository.delete(note.getId());
-        note = repository.get(note.getId());
+        note = repository.findOne(note.getId());
         Assert.assertNull(note);
     }
 }

@@ -13,7 +13,7 @@ dependencies {
     deploy project(path: ':${projectName}-web-service', configuration: 'archives')
 
     earlib libraries.idx.persistence_api
-    earlib libraries.idx.persistence_jpa
+    earlib libraries.springDataJPA
     earlib libraries.loggingAPI
     earlib libraries.loggingImpl
     earlib libraries.jcache

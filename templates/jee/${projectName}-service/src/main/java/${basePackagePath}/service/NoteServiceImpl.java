@@ -1,45 +1,51 @@
 package ${basePackage}.service;
 
-import ${basePackage}.api.model.Note;
-import ${basePackage}.api.service.NoteService;
-import ${basePackage}.persistence.entity.NoteEntity;
-import idx.persistence.repository.Repository;
+        import ${basePackage}.api.model.Note;
+        import ${basePackage}.api.service.NoteService;
+        import ${basePackage}.persistence.entity.NoteEntity;
+        import ${basePackage}.persistence.repository.NoteRepository;
 
-import javax.ejb.Stateless;
-import javax.inject.Inject;
-import java.util.List;
-import java.util.stream.Collectors;
+        import javax.ejb.Stateless;
+        import javax.inject.Inject;
+        import java.util.List;
+        import java.util.Spliterator;
+        import java.util.stream.Collectors;
+        import java.util.stream.Stream;
+        import java.util.stream.StreamSupport;
 
 @Stateless
 public class NoteServiceImpl implements NoteService {
 
     @Inject
-    private Repository<NoteEntity, Long> repository;
+    private NoteRepository repository;
 
 
     @Override
     public Note get(long id) {
-        return convert(repository.get(id));
+        return convert(repository.findOne(id));
     }
 
     @Override
     public Note save(Note note) {
         NoteEntity entity = new NoteEntity();
         if (note.getId() != null) {
-            entity = repository.get(note.getId());
+            entity = repository.findOne(note.getId());
         }
         return convert(repository.save(update(entity, note)));
     }
 
     @Override
     public List<Note> list() {
-        List<NoteEntity> list = repository.list();
-        return list.stream().map(this::convert).collect(Collectors.toList());
+        Spliterator<NoteEntity> spliterator = repository.findAll().spliterator();
+        Stream<NoteEntity> stream = StreamSupport.stream(spliterator, false);
+        return stream.map(this::convert).collect(Collectors.toList());
     }
 
     @Override
     public void delete(long id) {
-        repository.delete(id);
+        if (repository.exists(id)) {
+            repository.delete(id);
+        }
     }
 
     private Note convert(NoteEntity entity) {

@@ -89,7 +89,7 @@ public class ProjectSeeder {
                 input = defaultValue;
             }
             if (pattern != null && !pattern.matcher(input).matches()) {
-                System.out.println("  Invalid format, please try again");
+                System.out.println("   [!] invalid format, expected: " + pattern.pattern());
                 input = null;
             }
         }
