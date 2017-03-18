@@ -40,7 +40,7 @@ public class ProjectSeeder {
             template = promptParameter("Choose template");
         }
         String projectGroup = promptParameter("Project group", "org.test", SIMPLE_IDENTIFIER);
-        String projectName = promptParameter("Project name", "some-project", SIMPLE_IDENTIFIER);
+        String projectName = promptParameter("Project name", template + "-project", SIMPLE_IDENTIFIER);
         String projectDescription = promptParameter("Project description", projectName);
         String projectVersion = promptParameter("Project version", "1.0.0-SNAPSHOT", VERSION);
 
