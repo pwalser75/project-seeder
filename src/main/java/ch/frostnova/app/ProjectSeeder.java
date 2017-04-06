@@ -26,7 +26,10 @@ public class ProjectSeeder {
     }
 
     public ProjectSeeder() throws IOException {
+        projectWizard();
+    }
 
+    private void projectWizard() throws IOException {
         List<String> availableTemplates = getAvailableTemplates();
         if (availableTemplates.isEmpty()) {
             System.err.println("No templates available");
@@ -37,7 +40,12 @@ public class ProjectSeeder {
 
         String template = null;
         while (!availableTemplates.contains(template)) {
-            template = promptParameter("Choose template");
+            String suggestedTemplate = null;
+            if (template != null) {
+                final String t = template.toLowerCase().trim();
+                suggestedTemplate = availableTemplates.stream().map(String::toLowerCase).filter(n -> n.startsWith(t)).findFirst().orElse(null);
+            }
+            template = promptParameter("Choose template", suggestedTemplate);
         }
         String projectGroup = promptParameter("Project group", "org.test", SIMPLE_IDENTIFIER);
         String projectName = promptParameter("Project name", template + "-project", SIMPLE_IDENTIFIER);
@@ -69,10 +77,6 @@ public class ProjectSeeder {
                 .filter(File::isDirectory)
                 .map(File::getName)
                 .collect(Collectors.toList());
-    }
-
-    private static String promptParameter(String prompt) {
-        return promptParameter(prompt, null);
     }
 
     private static String promptParameter(String prompt, String defaultValue) {
@@ -109,6 +113,7 @@ public class ProjectSeeder {
                 process(templateDir, outputDir, path, replacements);
             }
         }
+        System.out.println();
         System.out.println("Project created at: " + outputDir.getAbsolutePath());
     }
 
@@ -118,7 +123,6 @@ public class ProjectSeeder {
 
 
         if (file.isDirectory()) {
-            System.out.println(">> create:  " + target.getAbsolutePath());
             target.mkdirs();
             String[] paths = file.list();
             if (paths != null) {
@@ -127,12 +131,11 @@ public class ProjectSeeder {
                 }
             }
         } else {
+            System.out.print('.');
             if (FILTER_FILE_SUFFIXES.stream().anyMatch(s -> target.getName().endsWith("." + s))) {
                 target.getParentFile().mkdirs();
-                System.out.println(">> process: " + target.getAbsolutePath());
                 copyText(file, target, replacements);
             } else {
-                System.out.println(">> copy:    " + target.getAbsolutePath());
                 copyBinary(file, target);
             }
         }
