@@ -13,7 +13,7 @@ import java.util.stream.Stream;
 public class ProjectSeeder {
 
     private final static File TEMPLATES_DIR = new File("templates");
-    private final static List<String> FILTER_FILE_SUFFIXES = Arrays.asList("txt", "md", "xml", "java", "gradle");
+    private final static List<String> FILTER_FILE_SUFFIXES = Arrays.asList("txt", "md", "xml", "java", "gradle", "ts", "js", "json");
 
     private final static Pattern SIMPLE_IDENTIFIER = Pattern.compile("\\p{Alnum}+([\\.\\-_]\\p{Alnum}+)*");
     private final static Pattern VERSION = Pattern.compile("(\\d+(?:\\.\\d+)*.*)");
