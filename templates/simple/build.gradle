@@ -44,10 +44,19 @@ ext.libraries = [
         testbase: [
                 "junit:junit:4.12",
                 "org.mockito:mockito-core:2.4.1"
+        ],
+        loggingAPI   : [
+                "org.slf4j:slf4j-api:1.7.22"
+        ],
+        loggingImpl  : [
+                "org.slf4j:jcl-over-slf4j:1.7.22",
+                "org.slf4j:jul-to-slf4j:1.7.22",
+                "ch.qos.logback:logback-classic:1.1.8"
         ]
 ]
 
-
 dependencies {
     testCompile libraries.testbase
+    compile libraries.loggingAPI
+    compile libraries.loggingImpl
 }
