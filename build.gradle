@@ -1,7 +1,6 @@
-defaultTasks 'clean', 'build', 'install'
+defaultTasks 'clean', 'build'
 
 apply plugin: 'java'
-apply plugin: 'maven'
 
 group = 'ch.frostnova'
 version = '1.0.0-SNAPSHOT'
@@ -11,8 +10,6 @@ targetCompatibility = 1.8
 
 repositories {
     jcenter()
-    mavenLocal()
-    mavenCentral()
 }
 
 sourceSets {
