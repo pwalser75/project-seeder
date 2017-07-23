@@ -5,4 +5,4 @@ server:
     key-alias: "test-server"
     key-store: "classpath:server-keystore.jks"
     key-store-password: "keystore"
-    key-password: "secret"
+    key-password: "keystore"
