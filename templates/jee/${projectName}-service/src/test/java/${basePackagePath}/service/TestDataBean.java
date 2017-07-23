@@ -2,7 +2,7 @@ package ${basePackage}.service;
 
         import ${basePackage}.persistence.entity.NoteEntity;
         import ${basePackage}.persistence.repository.NoteRepository;
-        import idx.persistence.testbase.cdi.TransactionalWrapper;
+        import ch.frostnova.jee.testbase.TransactionalWrapper;
         import org.slf4j.Logger;
 
         import javax.annotation.PostConstruct;

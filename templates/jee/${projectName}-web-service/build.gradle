@@ -5,7 +5,7 @@ jar.enabled = true
 description = '${projectDescription} Web Services'
 dependencies {
     providedCompile libraries.jee
-    providedCompile libraries.idx.persistence_api
+    providedCompile libraries.frostnova.persistence_jpa
     providedCompile project(':${projectName}-api')
 
     testCompile libraries.testbase

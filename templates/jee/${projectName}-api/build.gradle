@@ -1,7 +1,7 @@
 description = '${projectDescription} API'
 dependencies {
     compileOnly libraries.jee
-    compile libraries.idx.persistence_api
+    compile libraries.frostnova.persistence_jpa
 
     testCompile libraries.testbase
     testCompile libraries.jaxb

@@ -1,6 +1,6 @@
 package ${basePackage}.persistence.entity;
 
-import idx.persistence.entity.BaseMetadataEntity;
+import ch.frostnova.persistence.api.entity.BaseMetadataEntity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -25,16 +25,16 @@ public class NoteEntity extends BaseMetadataEntity<Long> {
     private LocalDate creationDate;
     private LocalDate lastModifiedDate;
 
-    @Override
+    private Long id;
+
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     public Long getId() {
-        return super.getId();
+        return id;
     }
 
-    @Override
-    public void setId(Long aLong) {
-        super.setId(aLong);
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getText() {

@@ -4,5 +4,5 @@ dependencies {
     compile project(':${projectName}-persistence')
     compile project(':${projectName}-api')
 
-    testCompile libraries.idx.persistence_testbase
+    testCompile libraries.frostnova.jee_testbase
 }
