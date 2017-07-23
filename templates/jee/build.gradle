@@ -158,9 +158,9 @@ ext.libraries = [
         ],
         guava        : "com.google.guava:guava:20.0",
         idx          : [
-                persistence_api     : "ch.frostnova:persistence-api:1.0.0-SNAPSHOT",
-                persistence_jpa     : "ch.frostnova:persistence-jpa:1.0.0-SNAPSHOT",
-                persistence_testbase: "ch.frostnova:persistence-testbase:1.0.0-SNAPSHOT",
-                ws_client_util      : "ch.frostnova:ws-client-util:1.0.0-SNAPSHOT"
+                persistence_api     : "ch.frostnova:persistence-api:1.0.0-RC1",
+                persistence_jpa     : "ch.frostnova:persistence-jpa:1.0.0-RC1",
+                persistence_testbase: "ch.frostnova:persistence-testbase:1.0.0-RC1",
+                ws_client_util      : "ch.frostnova:ws-client-util:1.0.0-RC1"
         ]
 ]
