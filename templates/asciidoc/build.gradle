@@ -18,7 +18,6 @@ buildscript {
     }
 }
 
-apply plugin: 'java'
 apply plugin: 'org.asciidoctor.convert'
 
 asciidoctorj {
@@ -41,7 +40,6 @@ tasks.withType(org.asciidoctor.gradle.AsciidoctorTask) { docTask ->
     attributes \
 			'author': author,
             'project-name': projectName,
-			'sourcedir': project.sourceSets.main.java.srcDirs[0],
             'source-highlighter': 'coderay',
             'toc': 'left',
             'icons': 'font',
@@ -77,5 +75,5 @@ task pdfArchives(type: Copy) {
 	}
 }
 
-build.dependsOn generateHTML
-build.dependsOn pdfArchives
+assemble.dependsOn generateHTML
+assemble.dependsOn pdfArchives
