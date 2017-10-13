@@ -1,0 +1,11 @@
+ifndef::imagesdir[:imagesdir: ..]
+
+= Diagrams
+
+== PlantUML Sequence Diagram
+
+plantuml::{imagesdir}/includes/diagrams/example-sequence-diagram.puml[format=png, alt="Example Sequence Diagram", align="left", width=600, height=600, scaledwidth=60%]
+
+== PlantUML Class Diagram
+
+plantuml::{imagesdir}/includes/diagrams/example-class-diagram.puml[format=png, alt="Example Class Diagram", align="left", width=600, height=600, scaledwidth=60%]

@@ -1,0 +1,244 @@
+font:
+  catalog:
+    Ubuntu Black:
+      normal: Ubuntu-B.ttf
+      italic: Ubuntu-BI.ttf
+      bold: Ubuntu-B.ttf
+      bold_italic: Ubuntu-BI.ttf
+    Ubuntu Regular:
+      normal: Ubuntu-R.ttf
+      italic: Ubuntu-RI.ttf
+      bold: Ubuntu-B.ttf
+      bold_italic: Ubuntu-BI.ttf
+    Ubuntu Light:
+      normal: Ubuntu-L.ttf
+      italic: Ubuntu-LI.ttf
+      bold: Ubuntu-B.ttf
+      bold_italic: Ubuntu-BI.ttf
+    Ubuntu Mono:
+      normal: UbuntuMono-R.ttf
+      italic: UbuntuMono-RI.ttf
+      bold: UbuntuMono-B.ttf
+      bold_italic: UbuntuMono-BI.ttf
+page:
+  background_color: ffffff
+  layout: portrait
+  margin: [40mm, 20mm, 30mm, 20mm]
+  size: A4
+base:
+  align: justify
+  font_color: 000000
+  font_family: Ubuntu Regular
+  font_size: 10
+  line_height_length: 15
+  line_height: $base_line_height_length / $base_font_size
+  font_size_large: 10
+  font_size_small: 8
+  font_size_min: 6
+  font_style: normal
+  border_color: eeeeee
+  border_radius: 2
+  border_width: 0.5
+vertical_rhythm: $base_line_height_length
+horizontal_rhythm: $base_line_height_length
+vertical_spacing: $vertical_rhythm
+idx:
+  doc_name: '{document-subtitle} - {document-title}'
+  primary: '#285593'
+  secondary: '#a0afc5'
+  footer:
+    page_num: '{page-number}'
+link:
+  font_color: 428bca
+literal:
+  font_family: Ubuntu Mono
+  font_color: $base_font_color
+  font_style: bold
+  background_color: f3f3f7
+heading:
+  align: left
+  margin_top: 10mm
+  font_style: normal
+  h1_font_style: bold
+  h2_font_style: bold
+  font_color: $idx_primary
+  font_family: Ubuntu Regular
+  h1_font_size: 32
+  h2_font_size: 22
+  h3_font_size: 18
+  h4_font_size: 16
+  h5_font_size: 14
+  h6_font_size: 12
+  line_height: 1
+  margin_top: $vertical_rhythm * 0.4
+  margin_bottom: $vertical_rhythm * 0.9
+title_page:
+  align: left
+  background_image: title-page.svg
+  title:
+    top: 75%
+    font_family: Ubuntu Black
+    font_size: 24
+    font_color: FFFFFF
+    line_height: 0.9
+  subtitle:
+    margin_top: 10
+    font_family: Ubuntu Light
+    font_size: 48
+    font_style: normal
+    font_color: FFFFFF
+    line_height: 1
+  authors:
+    margin_top: 5
+    font_family: Ubuntu Black
+    font_size: 12
+    font_color: FFFFFF
+  revision:
+    margin_top: 0
+    font_family: Ubuntu Light
+    font_size: 12
+    font_color: FFFFFF
+block:
+  margin_top: 0
+  margin_bottom: $vertical_rhythm
+caption:
+  align: left
+  font_style: normal
+  margin_inside: $vertical_rhythm / 3
+  margin_outside: 0
+lead:
+  font_size: $base_font_size_large
+  line_height: 1.4
+abstract:
+  font_color: 5c6266
+  font_size: $lead_font_size
+  line_height: $lead_line_height
+  font_style: normal
+  first_line_font_style: bold
+  title:
+    align: center
+    font_color: $heading_font_color
+    font_family: $heading_font_family
+    font_size: $heading_h4_font_size
+    font_style: $heading_font_style
+admonition:
+  border_color: $base_border_color
+  border_width: $base_border_width
+  padding: [0, $horizontal_rhythm, 0, $horizontal_rhythm]
+  icon:
+    tip:
+      name: fa-lightbulb-o
+      stroke_color: 111111
+      size: 24
+  label:
+    text_transform: uppercase
+    font_style: bold
+blockquote:
+  font_color: $base_font_color
+  font_size: $base_font_size_large
+  border_color: $base_border_color
+  border_width: 5
+  padding: [0, $horizontal_rhythm, $block_margin_bottom * -0.75, $horizontal_rhythm + $blockquote_border_width / 2]
+  cite_font_size: $base_font_size_small
+  cite_font_color: 999999
+code:
+  font_color: $base_font_color
+  font_family: $literal_font_family
+  font_size: ceil($base_font_size * 0.8)
+  padding: ceil($code_font_size / 2)
+  line_height: 1.15
+  line_gap: 3.8
+  background_color: f3f3f7
+  border_color: cccccc
+  border_radius: 0
+  border_width: 0.75
+conum:
+  font_family: $literal_font_family
+  font_color: $literal_font_color
+  font_size: $base_font_size
+  line_height: 4 / 3
+example:
+  border_color: $base_border_color
+  border_radius: $base_border_radius
+  border_width: 0.75
+  background_color: transparent
+  padding: [$vertical_rhythm, $horizontal_rhythm, 0, $horizontal_rhythm]
+image:
+  align: left
+prose:
+  margin_top: 0
+  margin_bottom: $vertical_rhythm
+sidebar:
+  background_color: eeeeee
+  border_color: $page_background_color
+  border_radius: $base_border_radius
+  border_width: $base_border_width
+  padding: [$vertical_rhythm, $vertical_rhythm * 1.25, 0, $vertical_rhythm * 1.25]
+  title:
+    align: center
+    font_color: $heading_font_color
+    font_family: $heading_font_family
+    font_size: $heading_h4_font_size
+    font_style: $heading_font_style
+thematic_break:
+  border_color: $base_border_color
+  border_style: solid
+  border_width: $base_border_width
+  margin_top: $vertical_rhythm * 0.5
+  margin_bottom: $vertical_rhythm * 1.5
+description_list:
+  term_font_style: bold
+  term_spacing: $vertical_rhythm / 4
+  description_indent: $horizontal_rhythm * 1.25
+outline_list:
+  indent: $horizontal_rhythm * 1.5
+  item_spacing: $vertical_rhythm / 2
+table:
+  head:
+    background_color: 3371b4
+    font_family: Ubuntu Medium
+    font_color: ffffff
+    font_style: normal
+  header_cell:
+    align: center
+  background_color: $page_background_color
+  even_row_background_color: f9f9f9
+  foot_background_color: f0f0f0
+  border_color: dddddd
+  border_width: $base_border_width
+  font_size: $base_font_size
+  cell_padding: 3
+toc:
+  h1_font_style: bold
+  h2_font_style: bold
+  indent: $horizontal_rhythm
+  line_height: 1.4
+  dot_leader:
+    color: dddddd
+header:
+  height: 30mm
+  font_family: Ubuntu Black
+  font_color: $idx_secondary
+  font_size: $base_font_size
+  image_vertical_align: bottom
+  vertical_align: bottom
+  border_color: $idx_secondary
+  line_height: 2
+  recto_content:
+    left: '{project-name}'
+    right: '{document-title} - {document-subtitle}'
+  verso_content:
+    left: $header_recto_content_right
+    right: $header_recto_content_left
+footer:
+  font_family: Ubuntu Black
+  font_size: $base_font_size * 3
+  font_color: $idx_secondary
+  height: 25mm
+  line_height: 1
+  padding: [$base_line_height_length / 2, 1, 10mm, 1]
+  vertical_align: middle
+  recto_content:
+    right: $idx_footer_page_num
+  verso_content:
+    left: $idx_footer_page_num

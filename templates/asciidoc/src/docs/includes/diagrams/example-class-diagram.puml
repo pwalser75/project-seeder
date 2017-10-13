@@ -1,0 +1,45 @@
+@startuml
+
+!include ../../theme/styles.iuml
+
+package "ch.frostnova.example" <<Frame>> {
+
+    interface ExampleService<<Service>> {
+        + process(Request): Result
+    }
+
+    class ExampleServiceImpl<<Stateless EJB>> {
+
+    }
+
+    class Request<<DTO>> {
+        # date: LocalDateTime
+        + getHeaders(): List<Header>
+        + getPayload(): Payload
+        + getState(): State
+        + setState(State): void
+    }
+    class Payload<<Value Object>> {
+        + contentType: MediaType
+        + data: byte[]
+    }
+
+    class Header<T><<Value Object>> {
+        + key: String
+        + value: T
+    }
+
+    enum State {
+        + PENDING
+        + DONE
+    }
+
+    ExampleServiceImpl ..|> ExampleService: implement
+    ExampleServiceImpl o-- Request: use
+    Request *--"0..*" Header: has
+    Request *--"1" Payload: has
+    Request o-- State: use
+}
+
+
+@enduml

@@ -1,0 +1,15 @@
+@startuml
+
+!include ../../theme/styles.iuml
+
+Alice -> Bob: Greeting
+Bob --> Bob: recognize Alice
+Bob -> Alice: Greeting
+
+note right
+    optional handshake protocol
+end note
+Alice -> Bob: State opinion about weather
+Alice <- Bob: Query well-being of family
+
+@enduml

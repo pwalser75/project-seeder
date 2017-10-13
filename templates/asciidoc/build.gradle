@@ -1,0 +1,81 @@
+defaultTasks 'clean', 'build'
+
+description = '${projectDescription}'
+group = '${projectGroup}'
+version = '${projectVersion}'
+
+def projectName = '${projectDescription}'
+def author = 'Configure Author(s) in the build.gradle'
+
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'org.asciidoctor:asciidoctor-gradle-plugin:1.5.3'
+        classpath 'org.asciidoctor:asciidoctorj-diagram:1.5.4'
+        classpath 'org.asciidoctor:asciidoctorj-pdf:1.5.0-alpha.15'
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'org.asciidoctor.convert'
+
+asciidoctorj {
+    version = '1.5.5'
+}
+
+project.task('copyImages', type: Copy) {
+    from 'src/docs/'
+    into 'build/docs/pdf/images'
+    include '**/images/*', '**/diagrams/*', '**/*.iuml', '**/*.puml'
+}
+
+tasks.withType(org.asciidoctor.gradle.AsciidoctorTask) { docTask ->
+
+    requires = ['asciidoctor-diagram','uri']
+    sourceDir = file('src/docs')
+    outputDir = file('build/docs')
+    logDocuments = true
+
+    attributes \
+			'author': author,
+            'project-name': projectName,
+			'sourcedir': project.sourceSets.main.java.srcDirs[0],
+            'source-highlighter': 'coderay',
+            'toc': 'left',
+            'icons': 'font',
+            'linkattrs': 'true',
+            'encoding': 'utf-8'
+}
+
+task generateHTML(type: org.asciidoctor.gradle.AsciidoctorTask) {
+    backends = ['html5']
+}
+
+task generatePDF(type: org.asciidoctor.gradle.AsciidoctorTask) {
+    dependsOn copyImages
+    mustRunAfter copyImages
+    attributes \
+        'pdf-stylesdir': 'theme',
+        'pdf-style': 'idx',
+        'pdf-fontsdir': "theme/fonts",
+        'imagesdir': file('build/docs/pdf/images').path
+    backends = ['pdf']
+}
+
+task pdfArchives(type: Copy) {
+	dependsOn generatePDF
+	from project.file('build/docs/pdf')
+	include '**/*.pdf'
+	into project.file('build/libs')
+	includeEmptyDirs = false
+	eachFile {
+		details ->
+			details.path = details.name.replaceFirst(/(.*)\.pdf/, '$1'+"-${project.version}.pdf")
+			project.artifacts.add('archives', project.file('build/libs/' + details.name))
+	}
+}
+
+build.dependsOn generateHTML
+build.dependsOn pdfArchives

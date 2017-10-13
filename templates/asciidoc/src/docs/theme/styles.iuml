@@ -1,0 +1,48 @@
+skinparam dpi 300
+
+skinparam defaultFontName Ubuntu
+
+skinparam title {
+    FontColor #444455
+	FontStyle bold
+	FontSize 28
+}
+skinparam package {
+	BorderColor #111122
+}
+skinparam sequence {
+    MessageAlign center
+    ArrowColor #983D61
+    ActorBackgroundColor #B1E2C1
+    ActorBorderColor #96BBAB
+    LifeLineBackgroundColor #DDDDDD
+    LifeLineBorderColor #CCCCCC
+    ParticipantBackgroundColor #c0d7ea
+    ParticipantBorderColor #004D9F
+    ParticipantFontStyle bold
+    BoxBackgroundColor #D9E0FA
+    BoxBorderColor #3e77a7
+    ParticipantBackgroundColor #white-#a0afc5
+}
+skinparam class {
+    BackgroundColor white-#FBEA8C
+	ArrowColor #333344
+	BorderColor #333344
+	FontStyle bold
+	FontSize 14
+}
+skinparam note {
+    BackgroundColor #FBE96C
+	BorderColor #E0B646
+}
+
+hide footbox
+
+!define Table(name,desc) class name as "desc" << (T,#FFAAAA) >>
+!define Table(name) class name << (T,#FFAAAA) >>
+!define primary_key(x) <b>x</b>
+!define id(x) <b>x</b>
+!define unique(x) <color:green>x</color>
+!define not_null(x) <u>x</u>
+
+!define reference(x) <color:#5A6E9C><u>x</u></color>
