@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<template>
+    <name>JEE</name>
+    <description>Multi-module Java EE 7 project</description>
+    <parameters>
+        <parameter name="projectGroup" label="Project group" type="identifier" default="org.test"/>
+        <parameter name="projectDescription" label="Project description" type="text" default="Example ${template.name} Project"/>
+        <parameter name="projectVersion" label="Project version" type="version" default="1.0.0-SNAPSHOT"/>
+        <parameter name="basePackage" label="Base package" type="javaPackage"
+                   default="${projectGroup}.${projectName}"/>
+    </parameters>
+</template>

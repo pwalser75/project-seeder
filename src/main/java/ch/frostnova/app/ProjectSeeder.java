@@ -3,6 +3,7 @@ package ch.frostnova.app;
 
 import java.io.*;
 import java.util.*;
+import java.util.function.Function;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -13,11 +14,7 @@ import java.util.stream.Stream;
 public class ProjectSeeder {
 
     private final static File TEMPLATES_DIR = new File("templates");
-    private final static List<String> FILTER_FILE_SUFFIXES = Arrays.asList("txt", "md", "xml", "java", "gradle", "ts", "js", "json");
-
-    private final static Pattern SIMPLE_IDENTIFIER = Pattern.compile("\\p{Alnum}+([\\.\\-_]\\p{Alnum}+)*");
-    private final static Pattern VERSION = Pattern.compile("(\\d+(?:\\.\\d+)*.*)");
-    private final static Pattern JAVA_PACKAGE_NAME = Pattern.compile("([\\p{L}\\p{Sc}_][\\p{L}\\p{N}\\p{Sc}_]*\\.)*[\\p{L}\\p{Sc}_][\\p{L}\\p{N}\\p{Sc}_]*");
+    private final static List<String> FILTER_FILE_SUFFIXES = Arrays.asList("txt", "md", "xml", "java", "gradle", "ts", "js", "json", "adoc", "puml");
 
     public static void main(String[] args) throws IOException {
 
@@ -30,52 +27,71 @@ public class ProjectSeeder {
     }
 
     private void projectWizard() throws IOException {
-        List<String> availableTemplates = getAvailableTemplates();
+        List<ProjectTemplate> availableTemplates = getAvailableTemplates();
         if (availableTemplates.isEmpty()) {
             System.err.println("No templates available");
             return;
         }
         System.out.println("Available templates:");
-        availableTemplates.forEach(t -> System.out.println("- " + t));
+        availableTemplates.forEach(t -> System.out.println("- " + t.getName() + "\n    " + t.getDescription()));
 
-        String template = null;
-        while (!availableTemplates.contains(template)) {
-            String suggestedTemplate = null;
-            if (template != null) {
-                final String t = template.toLowerCase().trim();
-                suggestedTemplate = availableTemplates.stream().map(String::toLowerCase).filter(n -> n.startsWith(t)).findFirst().orElse(null);
-            }
-            template = promptParameter("Choose template", suggestedTemplate);
-        }
-        String projectGroup = promptParameter("Project group", "org.test", SIMPLE_IDENTIFIER);
-        String projectName = promptParameter("Project name", template + "-project", SIMPLE_IDENTIFIER);
-        String projectDescription = promptParameter("Project description", projectName);
-        String projectVersion = promptParameter("Project version", "1.0.0-SNAPSHOT", VERSION);
-
-        String suggestedBasePackage = projectGroup + "." + projectName;
-        suggestedBasePackage = suggestedBasePackage.replaceAll("[^\\w]", ".");
-        String basePackage = promptParameter("Base package", suggestedBasePackage, JAVA_PACKAGE_NAME);
-        String outputDir = promptParameter("Base output dir", new File("..").getAbsolutePath());
-
+        ProjectTemplate template = pickTemplate(availableTemplates);
         Map<String, String> parameters = new HashMap<>();
-        parameters.put("projectGroup", projectGroup);
+        parameters.put("template.name", template.getName());
+        parameters.put("template.description", template.getDescription());
+        String projectName = promptParameter("Project name", template.getName() + "-project", ProjectTemplate.ParameterType.identifier.getPattern());
         parameters.put("projectName", projectName);
-        parameters.put("projectDescription", projectDescription);
-        parameters.put("projectVersion", projectVersion);
-        parameters.put("basePackage", basePackage);
-        parameters.put("basePackagePath", basePackage.replace(".", "/"));
 
-        seedProject(new File(TEMPLATES_DIR, template), new File(outputDir, projectName), parameters);
+        for (ProjectTemplate.Parameter parameter : template.getParameters()) {
+            String defaultValue = parameter.getDefaultValue() != null ? replaceAll(parameter.getDefaultValue(), parameters) : null;
+            if (defaultValue != null && parameter.getType() == ProjectTemplate.ParameterType.javaPackage) {
+                defaultValue = defaultValue.trim().replace("-", ".").replace("\\.+", ".").toLowerCase();
+            }
+            String value = promptParameter(parameter.getLabel(), defaultValue, parameter.getType().getPattern());
+            parameters.put(parameter.getName(), value);
+            if (parameter.getType() == ProjectTemplate.ParameterType.javaPackage) {
+                parameters.put(parameter.getName() + "Path", value.replace(".", "/"));
+            }
+        }
+
+        for (String key : parameters.keySet()) {
+            System.out.println(key + " = " + parameters.get(key));
+        }
+
+        String outputDir = promptParameter("Base output dir", new File("..").getAbsolutePath());
+        seedProject(template.getTemplateDir(), new File(outputDir, projectName), parameters);
     }
 
-    private static List<String> getAvailableTemplates() {
+    private ProjectTemplate pickTemplate(List<ProjectTemplate> availableTemplates) {
+        Map<String, ProjectTemplate> templateMap = availableTemplates.stream()
+                .collect(Collectors.toMap(t -> t.getName().toLowerCase(), Function.identity()));
+
+        List<String> sortedTemplateNames = availableTemplates.stream()
+                .map(ProjectTemplate::getName)
+                .sorted()
+                .collect(Collectors.toList());
+
+        String suggestedTemplateName = null;
+        while (true) {
+            String templateName = promptParameter("Choose template", suggestedTemplateName);
+            ProjectTemplate template = templateMap.get(templateName.toLowerCase());
+            if (template != null) {
+                return template;
+            }
+            suggestedTemplateName = sortedTemplateNames.stream().filter(n -> n.toLowerCase().startsWith(templateName)).findFirst().orElse(null);
+        }
+    }
+
+    private static List<ProjectTemplate> getAvailableTemplates() {
         File[] files = TEMPLATES_DIR.listFiles();
         if (files == null) {
             return Collections.emptyList();
         }
         return Stream.of(files)
                 .filter(File::isDirectory)
-                .map(File::getName)
+                .filter(d -> new File(d, "template.xml").exists())
+                .map(ProjectTemplate::new)
+                .sorted(Comparator.comparing(ProjectTemplate::getName))
                 .collect(Collectors.toList());
     }
 
@@ -92,7 +108,7 @@ public class ProjectSeeder {
             if (input.trim().length() == 0) {
                 input = defaultValue;
             }
-            if (pattern != null && !pattern.matcher(input).matches()) {
+            if (input != null && pattern != null && !pattern.matcher(input).matches()) {
                 System.out.println("   [!] invalid format, expected: " + pattern.pattern());
                 input = null;
             }
@@ -119,8 +135,10 @@ public class ProjectSeeder {
 
     private void process(File templateDir, File outputDir, String sourcePath, Map<String, String> replacements) throws IOException {
         File file = new File(templateDir, sourcePath);
+        if (file.getParentFile().equals(templateDir) && file.getName().equals("template.xml")) {
+            return;
+        }
         File target = new File(outputDir, replaceAll(sourcePath, replacements));
-
 
         if (file.isDirectory()) {
             target.mkdirs();

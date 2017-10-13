@@ -225,7 +225,6 @@ header:
   border_color: $idx_secondary
   line_height: 2
   recto_content:
-    left: '{project-name}'
     right: '{document-title} - {document-subtitle}'
   verso_content:
     left: $header_recto_content_right

@@ -9,5 +9,5 @@ imagesdir:: {imagesdir}
 
 == Custom
 project-name:: {project-name}
+project-group:: {project-group}
 project-version:: {project-version}
-sourcedir:: {sourcedir}
