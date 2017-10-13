@@ -27,9 +27,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.98994949"
-     inkscape:cx="-117.93421"
-     inkscape:cy="801.18218"
+     inkscape:zoom="0.49497475"
+     inkscape:cx="278.29157"
+     inkscape:cy="590.55846"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -185,68 +185,6 @@
          offset="1"
          style="stop-color:#4fb2d5;stop-opacity:1" />
     </linearGradient>
-    <linearGradient
-       id="linearGradient4647"
-       inkscape:collect="always">
-      <stop
-         id="stop4643"
-         offset="0"
-         style="stop-color:#000000;stop-opacity:0" />
-      <stop
-         id="stop4645"
-         offset="1"
-         style="stop-color:#000000;stop-opacity:0.248" />
-    </linearGradient>
-    <linearGradient
-       id="linearGradient4583"
-       inkscape:collect="always">
-      <stop
-         id="stop4579"
-         offset="0"
-         style="stop-color:#ffffff;stop-opacity:1" />
-      <stop
-         style="stop-color:#e3eaf0;stop-opacity:1"
-         offset="0.32140267"
-         id="stop4649" />
-      <stop
-         id="stop4581"
-         offset="1"
-         style="stop-color:#9099a5;stop-opacity:1" />
-    </linearGradient>
-    <radialGradient
-       gradientUnits="userSpaceOnUse"
-       gradientTransform="matrix(1.4873363,0.97806221,-1.0013097,1.3876117,55.873958,-77.343823)"
-       r="105"
-       fy="84.653114"
-       fx="55.616009"
-       cy="84.653114"
-       cx="55.616009"
-       id="radialGradient4587"
-       xlink:href="#linearGradient4583"
-       inkscape:collect="always" />
-    <linearGradient
-       y2="240.72879"
-       x2="89.202385"
-       y1="246.75333"
-       x1="89.202385"
-       gradientTransform="matrix(1,0,0,0.69187178,0,-125.78863)"
-       gradientUnits="userSpaceOnUse"
-       id="linearGradient4641"
-       xlink:href="#linearGradient4647"
-       inkscape:collect="always" />
-    <filter
-       height="1.2100074"
-       y="-0.10500372"
-       width="1.1983267"
-       x="-0.099163346"
-       id="filter5763"
-       style="color-interpolation-filters:sRGB"
-       inkscape:collect="always">
-      <feGaussianBlur
-         id="feGaussianBlur5765"
-         stdDeviation="3.9377215"
-         inkscape:collect="always" />
-    </filter>
     <linearGradient
        y2="233.46336"
        x2="210"
@@ -3050,38 +2988,38 @@
        x2="141.38522"
        y2="247.59436" />
     <linearGradient
-       gradientTransform="translate(-11.729204,-10.633179)"
+       gradientUnits="userSpaceOnUse"
+       y2="154.02298"
+       x2="210"
+       y1="75.606644"
+       x1="15.497023"
+       id="linearGradient1202"
+       xlink:href="#linearGradient4583-9"
        inkscape:collect="always"
-       xlink:href="#linearGradient8568"
-       id="linearGradient8570"
-       x1="20.354244"
-       y1="184.97231"
-       x2="21.41497"
-       y2="184.97231"
-       gradientUnits="userSpaceOnUse" />
+       gradientTransform="translate(-3.1273058e-7,2.0019445e-6)" />
     <linearGradient
        inkscape:collect="always"
-       id="linearGradient8568">
+       id="linearGradient4583-9">
       <stop
-         style="stop-color:#000000;stop-opacity:0.48826292"
+         style="stop-color:#ffffff;stop-opacity:1"
          offset="0"
-         id="stop8564" />
+         id="stop4579-3" />
       <stop
-         id="stop8576"
-         offset="0.10236292"
-         style="stop-color:#000000;stop-opacity:0.32156863;" />
+         id="stop8223"
+         offset="0.25389856"
+         style="stop-color:#ebf0f4;stop-opacity:1;" />
       <stop
-         id="stop8574"
-         offset="0.22047314"
-         style="stop-color:#000000;stop-opacity:0.23921569;" />
+         id="stop4649-9"
+         offset="0.45271525"
+         style="stop-color:#e3eaf0;stop-opacity:1" />
       <stop
-         id="stop8572"
-         offset="0.47637862"
-         style="stop-color:#000000;stop-opacity:0.14509804;" />
+         style="stop-color:#ccd3db;stop-opacity:1;"
+         offset="0.66772908"
+         id="stop8225" />
       <stop
-         style="stop-color:#000000;stop-opacity:0"
+         style="stop-color:#9099a5;stop-opacity:1"
          offset="1"
-         id="stop8566" />
+         id="stop4581-9" />
     </linearGradient>
   </defs>
   <metadata
@@ -3100,6 +3038,13 @@
      id="layer1"
      inkscape:groupmode="layer"
      inkscape:label="Ebene 1">
+    <rect
+       id="rect3747-1"
+       width="210"
+       height="197.21428"
+       x="-5.5101185e-007"
+       y="7.792882e-007"
+       style="fill:url(#linearGradient1202);fill-opacity:1;stroke:none;stroke-width:0.24565186" />
     <text
        id="text10101"
        y="166.9762"
@@ -3111,91 +3056,6 @@
          x="-205.61903"
          id="tspan10099"
          sodipodi:role="line" /></text>
-    <rect
-       style="fill:url(#radialGradient4587);fill-opacity:1;stroke-width:0.25899839"
-       y="40.73214"
-       x="0"
-       height="219.2262"
-       width="210"
-       id="rect3747" />
-    <rect
-       style="opacity:1;fill:url(#linearGradient4641);fill-opacity:1;stroke-width:0.15113105"
-       id="rect4639"
-       width="210"
-       height="4.2008929"
-       x="-5.5099133e-007"
-       y="40.73214" />
-    <g
-       transform="matrix(0.25990057,0,0,0.25898299,59.928909,-22.109682)"
-       id="g5775">
-      <g
-         id="g5745"
-         style="filter:url(#filter5763)">
-        <rect
-           transform="rotate(-101.82044)"
-           y="-170.3632"
-           x="-189.21581"
-           height="32.127975"
-           width="58.964287"
-           id="rect5696"
-           style="opacity:0.49100001;fill:#55d400;fill-opacity:1;stroke-width:0.26458332" />
-        <rect
-           transform="rotate(25.15109)"
-           y="194.21878"
-           x="-83.630905"
-           height="32.127975"
-           width="58.964287"
-           id="rect5692"
-           style="opacity:0.681;fill:#0081b8;fill-opacity:1;stroke-width:0.26458332" />
-        <rect
-           transform="rotate(-44.676521)"
-           style="opacity:0.65499998;fill:#37c895;fill-opacity:1;stroke-width:0.26458332"
-           id="rect5694"
-           width="58.964287"
-           height="32.127975"
-           x="-220.96867"
-           y="22.773222" />
-      </g>
-      <g
-         id="g5753"
-         transform="translate(-3.7501876,-9.5151647)">
-        <rect
-           style="opacity:0.49100001;fill:#55d400;fill-opacity:1;stroke-width:0.26458332"
-           id="rect5747"
-           width="58.964287"
-           height="32.127975"
-           x="-189.21581"
-           y="-170.3632"
-           transform="rotate(-101.82044)" />
-        <rect
-           style="opacity:0.681;fill:#0081b8;fill-opacity:1;stroke-width:0.26458332"
-           id="rect5749"
-           width="58.964287"
-           height="32.127975"
-           x="-83.630905"
-           y="194.21878"
-           transform="rotate(25.15109)" />
-        <rect
-           y="22.773222"
-           x="-220.96867"
-           height="32.127975"
-           width="58.964287"
-           id="rect5751"
-           style="opacity:0.65499998;fill:#37c895;fill-opacity:1;stroke-width:0.26458332"
-           transform="rotate(-44.676521)" />
-      </g>
-    </g>
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-size:10.58333302px;line-height:1.25;font-family:Ubuntu;-inkscape-font-specification:'Ubuntu, Medium';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#cccccc;fill-opacity:1;stroke:none;stroke-width:0.26458332"
-       x="147.8614"
-       y="34.306534"
-       id="text10109"><tspan
-         sodipodi:role="line"
-         id="tspan10107"
-         x="147.8614"
-         y="34.306534"
-         style="font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-size:10.58333302px;font-family:Ubuntu;-inkscape-font-specification:'Ubuntu, Medium';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start;fill:#cccccc;stroke-width:0.26458332">AUTHORS</tspan></text>
     <rect
        y="197.21428"
        x="0"
@@ -4814,12 +4674,5 @@
          x="121.46006"
          y="193.69774"
          style="font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-size:10.58333302px;font-family:Ubuntu;-inkscape-font-specification:'Ubuntu, Medium';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start;fill:#ffffff;stroke-width:0.26458332">EXPERT SERIES</tspan></text>
-    <rect
-       y="7.7926802e-007"
-       x="8.6268597"
-       height="297"
-       width="1.0542445"
-       id="rect4607-2"
-       style="opacity:1;fill:url(#linearGradient8570);fill-opacity:1;stroke-width:0.08758046" />
   </g>
 </svg>

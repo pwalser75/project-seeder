@@ -39,7 +39,7 @@ public class ProjectSeeder {
         Map<String, String> parameters = new HashMap<>();
         parameters.put("template.name", template.getName());
         parameters.put("template.description", template.getDescription());
-        String projectName = promptParameter("Project name", template.getName() + "-project", ProjectTemplate.ParameterType.identifier.getPattern());
+        String projectName = promptParameter("Project name", template.getName().toLowerCase().replaceAll("\\s+", "-") + "-project", ProjectTemplate.ParameterType.identifier.getPattern());
         parameters.put("projectName", projectName);
 
         for (ProjectTemplate.Parameter parameter : template.getParameters()) {
