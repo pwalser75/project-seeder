@@ -54,10 +54,6 @@ public class ProjectSeeder {
             }
         }
 
-        for (String key : parameters.keySet()) {
-            System.out.println(key + " = " + parameters.get(key));
-        }
-
         String outputDir = promptParameter("Base output dir", new File("..").getAbsolutePath());
         seedProject(template.getTemplateDir(), new File(outputDir, projectName), parameters);
     }

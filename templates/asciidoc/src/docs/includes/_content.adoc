@@ -10,6 +10,31 @@ Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie co
 
 Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi.
 
+== Icons
+
+Icons (from http://fontawesome.io/icons/)
+
+- icon:comment[] : Comment
+- icon:stack-overflow[] : Stackoverflow
+- icon:copy[] : Copy
+- icon:flask[] : Flask
+- icon:leaf[] : Leaf
+
+== Table
+
+[align="center", cols="3s,1a,3a", options="header", frame="none", grid="rows"]
+|====
+| Movie Title
+| Year
+| Genre
+| Blade Runner
+| 1982
+| Sci-Fi \| Thriller
+| The Cabin in the Woods
+| 2014
+| Fantasy \| Horror \| Mystery \| Thriller
+|====
+
 == Image
 
 image::{imagesdir}/images/banana.jpg[Banana, width=320, height=320, scaledwidth=32%]

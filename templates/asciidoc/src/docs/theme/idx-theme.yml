@@ -45,7 +45,8 @@ vertical_spacing: $vertical_rhythm
 idx:
   doc_name: '{document-subtitle} - {document-title}'
   primary: '#285593'
-  secondary: '#a0afc5'
+  light: '#a0afc5'
+  dark: '#535d6c'
   footer:
     page_num: '{page-number}'
 link:
@@ -77,18 +78,20 @@ title_page:
   background_image: title-page.svg
   title:
     top: 75%
-    font_family: Ubuntu Black
-    font_size: 24
+    font_family: Ubuntu Light
+    font_style: normal
+    font_size: 20
     font_color: FFFFFF
     line_height: 0.9
   subtitle:
     margin_top: 10
-    font_family: Ubuntu Light
-    font_size: 48
+    font_family: Ubuntu Black
+    font_size: 42
     font_style: normal
     font_color: FFFFFF
     line_height: 1
   authors:
+    top: 20%
     margin_top: 5
     font_family: Ubuntu Black
     font_size: 12
@@ -195,19 +198,20 @@ outline_list:
   item_spacing: $vertical_rhythm / 2
 table:
   head:
-    background_color: 3371b4
-    font_family: Ubuntu Medium
+    background_color: $idx_dark
+    font_family: Ubuntu Black
     font_color: ffffff
-    font_style: normal
+    font_style: bold
+    cell_padding: 5
   header_cell:
     align: center
   background_color: $page_background_color
   even_row_background_color: f9f9f9
   foot_background_color: f0f0f0
-  border_color: dddddd
+  border_color: $idx_light
   border_width: $base_border_width
   font_size: $base_font_size
-  cell_padding: 3
+  cell_padding: 5
 toc:
   h1_font_style: bold
   h2_font_style: bold
@@ -218,11 +222,11 @@ toc:
 header:
   height: 30mm
   font_family: Ubuntu Black
-  font_color: $idx_secondary
+  font_color: $idx_light
   font_size: $base_font_size
   image_vertical_align: bottom
   vertical_align: bottom
-  border_color: $idx_secondary
+  border_color: $idx_light
   line_height: 2
   recto_content:
     right: '{document-title} - {document-subtitle}'
@@ -232,7 +236,7 @@ header:
 footer:
   font_family: Ubuntu Black
   font_size: $base_font_size * 3
-  font_color: $idx_secondary
+  font_color: $idx_light
   height: 25mm
   line_height: 1
   padding: [$base_line_height_length / 2, 1, 10mm, 1]
