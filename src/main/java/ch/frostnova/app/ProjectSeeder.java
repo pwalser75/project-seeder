@@ -1,8 +1,23 @@
 package ch.frostnova.app;
 
 
-import java.io.*;
-import java.util.*;
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Scanner;
 import java.util.function.Function;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -54,8 +69,18 @@ public class ProjectSeeder {
             }
         }
 
-        String outputDir = promptParameter("Base output dir", new File("..").getAbsolutePath());
-        seedProject(template.getTemplateDir(), new File(outputDir, projectName), parameters);
+
+        File outputDir;
+        do {
+            String baseOutputDir = promptParameter("Base output dir", new File("..").getAbsolutePath());
+            outputDir = new File(baseOutputDir, projectName);
+            if (outputDir.exists() && outputDir.listFiles() != null && outputDir.listFiles().length > 0) {
+                System.out.println(outputDir.getAbsolutePath() + " already exists, please chose another base output directory.");
+                outputDir = null;
+            }
+        } while (outputDir == null);
+
+        seedProject(template.getTemplateDir(), outputDir, parameters);
     }
 
     private ProjectTemplate pickTemplate(List<ProjectTemplate> availableTemplates) {
