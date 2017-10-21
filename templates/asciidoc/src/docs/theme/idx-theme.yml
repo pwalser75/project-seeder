@@ -1,20 +1,20 @@
 font:
   catalog:
-    Ubuntu Black:
-      normal: Ubuntu-B.ttf
-      italic: Ubuntu-BI.ttf
-      bold: Ubuntu-B.ttf
-      bold_italic: Ubuntu-BI.ttf
-    Ubuntu Regular:
-      normal: Ubuntu-R.ttf
-      italic: Ubuntu-RI.ttf
-      bold: Ubuntu-B.ttf
-      bold_italic: Ubuntu-BI.ttf
-    Ubuntu Light:
-      normal: Ubuntu-L.ttf
-      italic: Ubuntu-LI.ttf
-      bold: Ubuntu-B.ttf
-      bold_italic: Ubuntu-BI.ttf
+    MerriweatherSans Black:
+      normal: MerriweatherSans-Bold.ttf
+      italic: MerriweatherSans-BoldItalic.ttf
+      bold: MerriweatherSans-Bold.ttf
+      bold_italic: MerriweatherSans-BoldItalic.ttf
+    MerriweatherSans Regular:
+      normal: MerriweatherSans-Regular.ttf
+      italic: MerriweatherSans-Italic.ttf
+      bold: MerriweatherSans-Bold.ttf
+      bold_italic: MerriweatherSans-BoldItalic.ttf
+    MerriweatherSans Light:
+      normal: MerriweatherSans-Light.ttf
+      italic: MerriweatherSans-LightItalic.ttf
+      bold: MerriweatherSans-Bold.ttf
+      bold_italic: MerriweatherSans-BoldItalic.ttf
     Ubuntu Mono:
       normal: UbuntuMono-R.ttf
       italic: UbuntuMono-RI.ttf
@@ -28,9 +28,9 @@ page:
 base:
   align: justify
   font_color: 000000
-  font_family: Ubuntu Regular
-  font_size: 10
-  line_height_length: 15
+  font_family: MerriweatherSans Regular
+  font_size: 9
+  line_height_length: 13
   line_height: $base_line_height_length / $base_font_size
   font_size_large: 10
   font_size_small: 8
@@ -63,9 +63,9 @@ heading:
   h1_font_style: bold
   h2_font_style: bold
   font_color: $idx_primary
-  font_family: Ubuntu Regular
-  h1_font_size: 32
-  h2_font_size: 22
+  font_family: MerriweatherSans Regular
+  h1_font_size: 40
+  h2_font_size: 28
   h3_font_size: 18
   h4_font_size: 16
   h5_font_size: 14
@@ -77,28 +77,28 @@ title_page:
   align: left
   background_image: title-page.svg
   title:
-    top: 75%
-    font_family: Ubuntu Light
+    top: 72.5%
+    font_family: MerriweatherSans Light
     font_style: normal
     font_size: 20
     font_color: FFFFFF
     line_height: 0.9
   subtitle:
     margin_top: 10
-    font_family: Ubuntu Black
-    font_size: 42
+    font_family: MerriweatherSans Black
+    font_size: 40
     font_style: normal
     font_color: FFFFFF
     line_height: 1
   authors:
     top: 20%
     margin_top: 5
-    font_family: Ubuntu Black
-    font_size: 12
+    font_family: MerriweatherSans Black
+    font_size: 14
     font_color: FFFFFF
   revision:
     margin_top: 0
-    font_family: Ubuntu Light
+    font_family: MerriweatherSans Light
     font_size: 12
     font_color: FFFFFF
 block:
@@ -199,7 +199,7 @@ outline_list:
 table:
   head:
     background_color: $idx_dark
-    font_family: Ubuntu Black
+    font_family: MerriweatherSans Black
     font_color: ffffff
     font_style: bold
     cell_padding: 5
@@ -221,7 +221,7 @@ toc:
     color: dddddd
 header:
   height: 30mm
-  font_family: Ubuntu Black
+  font_family: MerriweatherSans Black
   font_color: $idx_light
   font_size: $base_font_size
   image_vertical_align: bottom
@@ -234,7 +234,7 @@ header:
     left: $header_recto_content_right
     right: $header_recto_content_left
 footer:
-  font_family: Ubuntu Black
+  font_family: MerriweatherSans Black
   font_size: $base_font_size * 3
   font_color: $idx_light
   height: 25mm
