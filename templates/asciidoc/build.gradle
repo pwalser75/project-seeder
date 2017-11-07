@@ -21,10 +21,16 @@ asciidoctorj {
     version = '1.5.5'
 }
 
-project.task('copyImages', type: Copy) {
-    from 'src/docs/'
+project.task('copyHtmlImages', type: Copy) {
+    from 'src/docs'
+    into 'build/docs/html5'
+    include '**/*.svg', '**/*.png', '**/*.jpg', '**/*.jpeg', '**/*.gif', '**/*.iuml', '**/*.puml'
+}
+
+project.task('copyPdfImages', type: Copy) {
+    from 'src/docs'
     into 'build/docs/pdf/images'
-    include '**/images/*', '**/diagrams/*', '**/*.iuml', '**/*.puml'
+    include '**/*.svg', '**/*.png', '**/*.jpg', '**/*.jpeg', '**/*.gif', '**/*.iuml', '**/*.puml'
 }
 
 tasks.withType(org.asciidoctor.gradle.AsciidoctorTask) { docTask ->
@@ -47,16 +53,19 @@ tasks.withType(org.asciidoctor.gradle.AsciidoctorTask) { docTask ->
 
 task generateHTML(type: org.asciidoctor.gradle.AsciidoctorTask) {
     backends = ['html5']
+    dependsOn copyHtmlImages
+    mustRunAfter copyHtmlImages
 }
 
 task generatePDF(type: org.asciidoctor.gradle.AsciidoctorTask) {
-    dependsOn copyImages
-    mustRunAfter copyImages
+    backends = ['html5']
+    dependsOn copyPdfImages
+    mustRunAfter copyPdfImages
     attributes  \
-         'pdf-stylesdir': 'theme',
-            'pdf-style': 'idx',
-            'pdf-fontsdir': "theme/fonts",
-            'imagesdir': file('build/docs/pdf/images').path
+		'pdf-stylesdir': 'theme',
+		'pdf-style': 'idx',
+		'pdf-fontsdir': "theme/fonts",
+		'imagesdir': file('build/docs/pdf/images').path
     backends = ['pdf']
 }
 
