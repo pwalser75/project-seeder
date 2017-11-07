@@ -23,6 +23,7 @@ endif::[]
 :toclevels: 3
 
 ifndef::imagesdir[:imagesdir: .]
+ifndef::plantumldir[:plantumldir: {imagesdir}]
 
 include::includes/_content.adoc[leveloffset=+1]
 include::includes/_diagrams.adoc[leveloffset=+1]

@@ -24,7 +24,7 @@ asciidoctorj {
 project.task('copyHtmlImages', type: Copy) {
     from 'src/docs'
     into 'build/docs/html5'
-    include '**/*.svg', '**/*.png', '**/*.jpg', '**/*.jpeg', '**/*.gif', '**/*.iuml', '**/*.puml'
+    include '**/*.svg', '**/*.png', '**/*.jpg', '**/*.jpeg', '**/*.gif'
 }
 
 project.task('copyPdfImages', type: Copy) {
@@ -41,14 +41,14 @@ tasks.withType(org.asciidoctor.gradle.AsciidoctorTask) { docTask ->
     logDocuments = true
 
     attributes  \
-             'project-name': project.name,
-            'project-group': project.group,
-            'project-version': project.version,
-            'source-highlighter': 'coderay',
-            'toc': 'left',
-            'icons': 'font',
-            'linkattrs': 'true',
-            'encoding': 'utf-8'
+        'project-name': project.name,
+        'project-group': project.group,
+        'project-version': project.version,
+        'source-highlighter': 'coderay',
+        'toc': 'left',
+        'icons': 'font',
+        'linkattrs': 'true',
+        'encoding': 'utf-8'
 }
 
 task generateHTML(type: org.asciidoctor.gradle.AsciidoctorTask) {
@@ -62,10 +62,10 @@ task generatePDF(type: org.asciidoctor.gradle.AsciidoctorTask) {
     dependsOn copyPdfImages
     mustRunAfter copyPdfImages
     attributes  \
-		'pdf-stylesdir': 'theme',
-		'pdf-style': 'idx',
-		'pdf-fontsdir': "theme/fonts",
-		'imagesdir': file('build/docs/pdf/images').path
+        'pdf-stylesdir': 'theme',
+        'pdf-style': 'idx',
+        'pdf-fontsdir': "theme/fonts",
+        'imagesdir': file('build/docs/pdf/images').path
     backends = ['pdf']
 }
 
@@ -82,5 +82,21 @@ task pdfArchives(type: Copy) {
     }
 }
 
-assemble.dependsOn generateHTML
+task htmlArchives(type: Zip) {
+    dependsOn generateHTML
+    from project.file('build/docs/html5')
+    baseName 'documentation'
+    appendix 'html5'
+    include '**/*'
+    exclude '.*'
+    exclude 'theme'
+    includeEmptyDirs false
+    destinationDir(file('build/libs'))
+}
+
+artifacts {
+    archives htmlArchives
+}
+
+assemble.dependsOn htmlArchives
 assemble.dependsOn pdfArchives
