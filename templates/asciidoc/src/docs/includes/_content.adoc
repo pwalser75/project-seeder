@@ -37,7 +37,7 @@ Icons (from http://fontawesome.io/icons/)
 
 == Image
 
-image::{imagesdir}/images/banana.jpg[Banana, width=320, height=320, scaledwidth=32%]
+image::images/fruit/banana.jpg[Banana, width=320, height=320, scaledwidth=32%]
 
 == Code
 
