@@ -44,9 +44,9 @@ horizontal_rhythm: $base_line_height_length
 vertical_spacing: $vertical_rhythm
 idx:
   doc_name: '{document-subtitle} - {document-title}'
-  primary: '#285593'
-  light: '#a0afc5'
-  dark: '#535d6c'
+  primary: 285593
+  light: a0afc5
+  dark: 535d6c
   footer:
     page_num: '{page-number}'
 link:
