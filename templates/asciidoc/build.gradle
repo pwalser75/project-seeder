@@ -75,9 +75,9 @@ task pdfArchives(type: Copy) {
     include '**/*.pdf'
     into project.file('build/libs')
     includeEmptyDirs = false
-    eachFile {
+	eachFile {
         details ->
-            details.path = details.name.replaceFirst(/(.*)\.pdf/, '$1' + "-${project.version}.pdf")
+            details.path = details.name.replaceFirst(/(.*)\.pdf/, "${project.name}-${project.version}-" + '$1.pdf')
             project.artifacts.add('archives', project.file('build/libs/' + details.name))
     }
 }
