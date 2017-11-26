@@ -1,9 +1,9 @@
 description = '${projectDescription} Persistence'
 dependencies {
-    compileOnly libraries.jee
-    compile libraries.springDataJPA
-    compile libraries.frostnova.persistence_jpa
+    compileOnly libs.jee
+    compile libs.springDataJPA
+    compile libs.frostnova.persistence_jpa
     compile project(':${projectName}-api')
 
-    testCompile libraries.frostnova.jee_testbase
+    testCompile libs.frostnova.jee_testbase
 }

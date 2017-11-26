@@ -40,7 +40,7 @@ jar {
     }
 }
 
-ext.libraries = [
+ext.libs = [
         testbase: [
                 "junit:junit:4.12",
                 "org.mockito:mockito-core:2.4.1"
@@ -56,7 +56,7 @@ ext.libraries = [
 ]
 
 dependencies {
-    testCompile libraries.testbase
-    compile libraries.loggingAPI
-    compile libraries.loggingImpl
+    testCompile libs.testbase
+    compile libs.loggingAPI
+    compile libs.loggingImpl
 }

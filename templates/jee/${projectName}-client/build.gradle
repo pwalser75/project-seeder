@@ -1,7 +1,7 @@
 description = '${projectDescription} Client'
 dependencies {
     compile project(':${projectName}-api')
-    compile libraries.frostnova.webservice_client_util
+    compile libs.frostnova.webservice_client_util
 
-    testCompile libraries.testbase
+    testCompile libs.testbase
 }

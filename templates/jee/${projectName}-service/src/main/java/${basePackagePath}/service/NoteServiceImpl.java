@@ -22,14 +22,14 @@ public class NoteServiceImpl implements NoteService {
 
     @Override
     public Note get(long id) {
-        return convert(repository.findOne(id));
+        return convert(repository.findById(id).orElse(null));
     }
 
     @Override
     public Note save(Note note) {
         NoteEntity entity = new NoteEntity();
         if (note.getId() != null) {
-            entity = repository.findOne(note.getId());
+            entity = repository.findById(note.getId()).orElse(null);
         }
         return convert(repository.save(update(entity, note)));
     }
@@ -43,8 +43,8 @@ public class NoteServiceImpl implements NoteService {
 
     @Override
     public void delete(long id) {
-        if (repository.exists(id)) {
-            repository.delete(id);
+        if (repository.findById(id).isPresent()) {
+            repository.deleteById(id);
         }
     }
 

@@ -12,11 +12,11 @@ dependencies {
     deploy project(':${projectName}-persistence')
     deploy project(path: ':${projectName}-web-service', configuration: 'archives')
 
-    earlib libraries.frostnova.persistence_jpa
-    earlib libraries.springDataJPA
-    earlib libraries.loggingAPI
-    earlib libraries.loggingImpl
-    earlib libraries.jcache
+    earlib libs.frostnova.persistence_jpa
+    earlib libs.springDataJPA
+    earlib libs.loggingAPI
+    earlib libs.loggingImpl
+    earlib libs.jcache
 }
 
 ear {

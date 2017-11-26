@@ -1,8 +1,8 @@
 description = '${projectDescription} Service'
 dependencies {
-    compileOnly libraries.jee
+    compileOnly libs.jee
     compile project(':${projectName}-persistence')
     compile project(':${projectName}-api')
 
-    testCompile libraries.frostnova.jee_testbase
+    testCompile libs.frostnova.jee_testbase
 }

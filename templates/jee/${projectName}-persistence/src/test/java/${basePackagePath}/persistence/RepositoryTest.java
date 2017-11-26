@@ -28,7 +28,7 @@ public class RepositoryTest {
         Assert.assertNotNull(note.getId());
 
         // read
-        note = repository.findOne(note.getId());
+        note = repository.findById(note.getId()).orElseThrow(NoSuchElementException::new);
         Assert.assertEquals("Aloha", note.getText());
 
         // update
@@ -36,8 +36,6 @@ public class RepositoryTest {
         note = repository.save(note);
 
         // delete
-        repository.delete(note.getId());
-        note = repository.findOne(note.getId());
-        Assert.assertNull(note);
+        Assert.assertFalse(repository.existsById(note.getId()));
     }
 }

@@ -4,11 +4,11 @@ jar.enabled = true
 
 description = '${projectDescription} Web Services'
 dependencies {
-    providedCompile libraries.jee
-    providedCompile libraries.frostnova.persistence_jpa
+    providedCompile libs.jee
+    providedCompile libs.frostnova.persistence_jpa
     providedCompile project(':${projectName}-api')
 
-    testCompile libraries.testbase
-    testCompile libraries.jaxrs
-    testCompile libraries.guava
+    testCompile libs.testbase
+    testCompile libs.jaxrs
+    testCompile libs.guava
 }

@@ -40,7 +40,7 @@ war {
     }
 }
 
-ext.libraries = [
+ext.libs = [
         jee        : "javax:javaee-api:7.0",
         junit      : "junit:junit:4.12",
         mockito    : "org.mockito:mockito-core:2.3.0",
@@ -65,13 +65,13 @@ ext.libraries = [
 ]
 
 dependencies {
-    providedCompile libraries.jee
-    compile libraries.jaxrs
-    compile libraries.jaxb
-    compile libraries.loggingAPI
-    runtime libraries.loggingImpl
+    providedCompile libs.jee
+    compile libs.jaxrs
+    compile libs.jaxb
+    compile libs.loggingAPI
+    runtime libs.loggingImpl
 
-    testCompile libraries.junit
-    testCompile libraries.mockito
+    testCompile libs.junit
+    testCompile libs.mockito
 }
 
