@@ -230,6 +230,7 @@ header:
   line_height: 2
   recto_content:
     right: '{document-title} - {document-subtitle}'
+    left:
   verso_content:
     left: $header_recto_content_right
     right: $header_recto_content_left
@@ -242,6 +243,8 @@ footer:
   padding: [$base_line_height_length / 2, 1, 10mm, 1]
   vertical_align: middle
   recto_content:
+    left:
     right: $idx_footer_page_num
   verso_content:
     left: $idx_footer_page_num
+    right:
