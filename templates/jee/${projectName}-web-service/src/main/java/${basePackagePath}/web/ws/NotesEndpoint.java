@@ -19,8 +19,6 @@ import java.util.NoSuchElementException;
 
 /**
  * Full local path: https://localhost:8443/notes/api/notes
- *
- * @author pwalser
  */
 @RequestScoped
 @Path("notes")

@@ -1,6 +1,4 @@
-skinparam dpi 300
-
-skinparam defaultFontName Ubuntu
+skinparam dpi 150
 
 skinparam title {
     FontColor #444455

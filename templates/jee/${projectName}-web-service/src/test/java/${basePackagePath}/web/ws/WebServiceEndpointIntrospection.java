@@ -29,9 +29,7 @@ package ${basePackage}.web.ws;
 
 /**
  * Test util class for web service endpoint introspection
- *
- * @author Peter Walser
- * @since 13.12.2016
+ 
  */
 public final class WebServiceEndpointIntrospection {
 

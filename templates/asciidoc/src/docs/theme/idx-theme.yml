@@ -74,33 +74,32 @@ heading:
   margin_top: $vertical_rhythm * 0.4
   margin_bottom: $vertical_rhythm * 0.9
 title_page:
-  align: left
+  align: right
   background_image: title-page.svg
   title:
-    top: 72.5%
+    top: 60%
     font_family: MerriweatherSans Light
     font_style: normal
     font_size: 20
-    font_color: FFFFFF
+    font_color: 888899
     line_height: 0.9
   subtitle:
-    margin_top: 10
     font_family: MerriweatherSans Black
-    font_size: 40
+    font_size: 48
     font_style: normal
-    font_color: FFFFFF
+    font_color: 333344
     line_height: 1
   authors:
     top: 20%
     margin_top: 5
     font_family: MerriweatherSans Black
     font_size: 14
-    font_color: FFFFFF
+    font_color: 888899
   revision:
     margin_top: 0
     font_family: MerriweatherSans Light
     font_size: 12
-    font_color: FFFFFF
+    font_color: 888899
 block:
   margin_top: 0
   margin_bottom: $vertical_rhythm
@@ -230,7 +229,6 @@ header:
   line_height: 2
   recto_content:
     right: '{document-title} - {document-subtitle}'
-    left:
   verso_content:
     left: $header_recto_content_right
     right: $header_recto_content_left
@@ -243,8 +241,6 @@ footer:
   padding: [$base_line_height_length / 2, 1, 10mm, 1]
   vertical_align: middle
   recto_content:
-    left:
     right: $idx_footer_page_num
   verso_content:
     left: $idx_footer_page_num
-    right:

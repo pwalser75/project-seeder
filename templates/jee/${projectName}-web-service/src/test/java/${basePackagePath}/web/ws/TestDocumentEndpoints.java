@@ -7,9 +7,7 @@ package ${basePackage}.web.ws;
 
 /**
  * Test: find endpoints and document them.
- *
- * @author wap
- * @since 13.12.2016
+ 
  */
 public class TestDocumentEndpoints {
 
