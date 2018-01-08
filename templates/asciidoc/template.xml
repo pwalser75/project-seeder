@@ -7,7 +7,7 @@
         <parameter name="projectDescription" label="Project description" type="text" default="Example ${template.name} Project"/>
         <parameter name="projectVersion" label="Project version" type="version" default="1.0.0-SNAPSHOT"/>
         <parameter name="category" label="Document category" type="text" default="Documentation"/>
-        <parameter name="title" label="Document Title" type="text" default="${projectName}"/>
+        <parameter name="title" label="Document Title" type="text" default="${projectDescription}"/>
         <parameter name="author" label="Document author(s)" type="text" default="Unknown Author"/>
     </parameters>
 </template>
