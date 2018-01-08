@@ -228,6 +228,7 @@ header:
   border_color: $idx_light
   line_height: 2
   recto_content:
+    left: 
     right: '{document-title} - {document-subtitle}'
   verso_content:
     left: $header_recto_content_right
