@@ -77,7 +77,7 @@ title_page:
   align: right
   background_image: title-page.svg
   title:
-    top: 60%
+    top: 50%
     font_family: MerriweatherSans Light
     font_style: normal
     font_size: 20
@@ -197,17 +197,17 @@ outline_list:
   item_spacing: $vertical_rhythm / 2
 table:
   head:
-    background_color: $idx_dark
+    background_color: dadcdd
     font_family: MerriweatherSans Black
-    font_color: ffffff
+    font_color: 000000
     font_style: bold
     cell_padding: 5
   header_cell:
     align: center
   background_color: $page_background_color
-  even_row_background_color: f9f9f9
+  even_row_background_color: f1f2f2
   foot_background_color: f0f0f0
-  border_color: $idx_light
+  border_color: A7ABAE
   border_width: $base_border_width
   font_size: $base_font_size
   cell_padding: 5

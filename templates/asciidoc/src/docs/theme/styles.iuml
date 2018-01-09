@@ -1,5 +1,11 @@
 skinparam dpi 150
 
+skinparam default {
+    FontColor #444455
+	FontSize 12
+	BorderColor #333344
+}
+
 skinparam title {
     FontColor #444455
 	FontStyle bold
@@ -27,11 +33,54 @@ skinparam class {
 	ArrowColor #333344
 	BorderColor #333344
 	FontStyle bold
-	FontSize 14
+}
+skinparam component {
+    BackgroundColor white-#FBEA8C
+	ArrowColor #333344
+	BorderColor #333344
+	FontStyle bold
+}
+skinparam node {
+    BackgroundColor white-#FBEA8C
+	ArrowColor #333344
+	BorderColor #333344
+	FontStyle bold
+}
+skinparam partition {
+	ArrowColor #333344
+	BorderColor #333344
+	FontStyle bold
+}
+skinparam activity {
+    BackgroundColor white-#FBEA8C
+	ArrowColor #333344
+	BorderColor #333344
+}
+skinparam branch {
+    BackgroundColor white-#FBEA8C
+	ArrowColor #333344
+	BorderColor #333344
+}
+skinparam state {
+    BackgroundColor white-#FBEA8C
+	ArrowColor #333344
+	BorderColor #333344
 }
 skinparam note {
     BackgroundColor #FBE96C
 	BorderColor #E0B646
+}
+skinparam state {
+    BackgroundColor white-#FBEA8C
+	ArrowColor #333344
+	BorderColor #333344
+	FontStyle bold
+}
+skinparam object {
+    BackgroundColor white-#FBEA8C
+	ArrowColor #333344
+	BorderColor #333344
+	FontStyle bold
 }
 
 hide footbox
