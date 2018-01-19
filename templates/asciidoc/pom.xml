@@ -130,6 +130,7 @@
 								<icons>font</icons>
 								<linkattrs>true</linkattrs>
 								<encoding>utf-8</encoding>
+								<allow-uri-read>true</allow-uri-read>
 								<pdf-stylesdir>theme</pdf-stylesdir>
 								<pdf-style>idx</pdf-style>
 								<pdf-fontsdir>theme/fonts</pdf-fontsdir>

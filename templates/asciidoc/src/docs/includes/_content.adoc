@@ -35,9 +35,11 @@ Icons (from http://fontawesome.io/icons/)
 | Fantasy \| Horror \| Mystery \| Thriller
 |====
 
-== Image
+== Images
 
 image::images/fruit/banana.jpg[Banana, width=320, height=320, scaledwidth=32%]
+
+image::http://frostnova.ch/temp/kitchen.jpg[]
 
 == Code
 

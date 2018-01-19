@@ -48,7 +48,8 @@ tasks.withType(org.asciidoctor.gradle.AsciidoctorTask) { docTask ->
         'toc': 'left',
         'icons': 'font',
         'linkattrs': 'true',
-        'encoding': 'utf-8'
+        'encoding': 'utf-8',
+		'allow-uri-read': 'true'
 }
 
 task generateHTML(type: org.asciidoctor.gradle.AsciidoctorTask) {
