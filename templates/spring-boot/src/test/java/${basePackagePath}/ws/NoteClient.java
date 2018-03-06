@@ -9,11 +9,10 @@ import javax.ws.rs.client.Invocation;
 import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.Response;
 import org.glassfish.jersey.client.ClientProperties;
-import org.glassfish.jersey.filter.LoggingFilter;
+import org.glassfish.jersey.logging.LoggingFeature;
 import java.io.InputStream;
 import java.security.KeyStore;
 import java.util.List;
-import java.util.logging.Logger;
 
 /**
  * Note client API
@@ -43,7 +42,8 @@ public class NoteClient implements AutoCloseable {
                     .trustStore(truststore)
                     .property(ClientProperties.CONNECT_TIMEOUT, 500)
                     .property(ClientProperties.READ_TIMEOUT, 5000)
-                    .register(new LoggingFilter(Logger.getLogger(LoggingFilter.class.getName()), true))
+					.property(LoggingFeature.LOGGING_FEATURE_VERBOSITY_CLIENT, LoggingFeature.Verbosity.PAYLOAD_ANY)
+					.property(LoggingFeature.LOGGING_FEATURE_LOGGER_LEVEL_CLIENT, "WARNING")
                     .hostnameVerifier((hostname, sslSession) -> "localhost".equals(hostname));
         } catch (Exception ex) {
             throw new RuntimeException("Unable to load client truststore", ex);

@@ -29,10 +29,6 @@ repositories {
     mavenCentral()
 }
 
-sourceSets {
-    main { output.resourcesDir = output.classesDir }
-    test { output.resourcesDir = output.classesDir }
-}
 jar { duplicatesStrategy = 'exclude' }
 
 compileJava.options.encoding = 'UTF-8'
