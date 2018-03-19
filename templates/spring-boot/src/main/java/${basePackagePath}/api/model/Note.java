@@ -1,22 +1,32 @@
 package ${basePackage}.api.model;
 
-import ${basePackage}.api.converter.LocalDateTimeXMLAdapter;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import ${basePackage}.api.converter.LocalDateTimeConverter;
 
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
  * DTO for Note
  */
-@XmlRootElement
 public class Note implements Serializable {
 
+    @JsonProperty("id")
     private Long id;
+
+    @JsonProperty("text")
     private String text;
+
+    @JsonProperty("creation_date")
+    @JsonSerialize(using = LocalDateTimeConverter.Serializer.class)
+    @JsonDeserialize(using = LocalDateTimeConverter.Deserializer.class)
     private LocalDateTime creationDate;
+
+    @JsonProperty("modification_date")
+    @JsonSerialize(using = LocalDateTimeConverter.Serializer.class)
+    @JsonDeserialize(using = LocalDateTimeConverter.Deserializer.class)
     private LocalDateTime modificationDate;
 
     public Note() {
@@ -27,7 +37,6 @@ public class Note implements Serializable {
         this.text = text;
     }
 
-    @XmlElement(name = "id")
     public Long getId() {
         return id;
     }
@@ -36,7 +45,6 @@ public class Note implements Serializable {
         this.id = id;
     }
 
-    @XmlElement(name = "text")
     public String getText() {
         return text;
     }
@@ -45,8 +53,6 @@ public class Note implements Serializable {
         this.text = text;
     }
 
-    @XmlElement(name = "creation_date")
-    @XmlJavaTypeAdapter(LocalDateTimeXMLAdapter.class)
     public LocalDateTime getCreationDate() {
         return creationDate;
     }
@@ -55,8 +61,6 @@ public class Note implements Serializable {
         this.creationDate = creationDate;
     }
 
-    @XmlElement(name = "modification_date")
-    @XmlJavaTypeAdapter(LocalDateTimeXMLAdapter.class)
     public LocalDateTime getModificationDate() {
         return modificationDate;
     }
