@@ -1,10 +1,13 @@
-package ${basePackage}.client;
+package $
 
 import org.glassfish.jersey.client.ClientProperties;
+import org.glassfish.jersey.logging.LoggingFeature;
 
 import javax.ws.rs.client.ClientBuilder;
 import java.io.InputStream;
 import java.security.KeyStore;
+
+{basePackage}.client;
 
 /**
  * Created by pwalser on 22.12.2016.
@@ -24,6 +27,8 @@ public final class TestConnectionFactory {
                     .trustStore(truststore)
                     .property(ClientProperties.CONNECT_TIMEOUT, 500)
                     .property(ClientProperties.READ_TIMEOUT, 5000)
+                    .property(LoggingFeature.LOGGING_FEATURE_VERBOSITY_CLIENT, LoggingFeature.Verbosity.PAYLOAD_ANY)
+                    .property(LoggingFeature.LOGGING_FEATURE_LOGGER_LEVEL_CLIENT, "WARNING")
                     .hostnameVerifier((hostname, sslSession) -> "localhost".equals(hostname));
         }
     }
