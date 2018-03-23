@@ -30,6 +30,7 @@ skinparam sequence {
 }
 skinparam class {
     BackgroundColor white-#FBEA8C
+    BackgroundColor<<Table>> white-AAD6E6
 	ArrowColor #333344
 	BorderColor #333344
 	FontStyle bold
@@ -77,7 +78,7 @@ skinparam state {
 	FontStyle bold
 }
 skinparam object {
-    BackgroundColor white-#FBEA8C
+    BackgroundColor white-#AAD6E6
 	ArrowColor #333344
 	BorderColor #333344
 	FontStyle bold
@@ -85,11 +86,13 @@ skinparam object {
 
 hide footbox
 
-!define Table(name,desc) class name as "desc" << (T,#FFAAAA) >>
-!define Table(name) class name << (T,#FFAAAA) >>
-!define primary_key(x) <b>x</b>
+!define Table(name,desc) class name as "desc" << (T,#AAD6E6) >> <<Table>>
+!define Table(name) class name << (T,#AAD6E6) >>
+!define primary_key(x) <&key> <b><color:#286ACD>x</color></b>
+!define foreign_key(x) <&share> <b><color:#0C7A79>x</color></b>
 !define id(x) <b>x</b>
-!define unique(x) <color:green>x</color>
-!define not_null(x) <u>x</u>
+!define unique(x) <&tag> <b><u>x</u></b>
+!define not_null(x) <&tag> <b>x</b>
+!define column(x) <&chevron-right> <b>x</b>
 
 !define reference(x) <color:#5A6E9C><u>x</u></color>

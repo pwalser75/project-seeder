@@ -10,3 +10,7 @@ plantuml::{plantumldir}/includes/diagrams/example-sequence-diagram.puml[format=p
 == PlantUML Class Diagram
 
 plantuml::{plantumldir}/includes/diagrams/example-class-diagram.puml[format=png, alt="Example Class Diagram", align="left", width=600, height=600, scaledwidth=60%]
+
+== PlantUML E/R Diagram
+
+plantuml::{plantumldir}/includes/diagrams/example-er-diagram.puml[format=png, alt="Example E/R Diagram", align="left", width=600, height=600, scaledwidth=60%]

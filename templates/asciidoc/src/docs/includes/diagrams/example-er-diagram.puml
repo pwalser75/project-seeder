@@ -1,0 +1,48 @@
+@startuml
+
+!include ../../theme/styles.iuml
+
+hide methods
+
+Table(PRODUCT, "Product\n(products that can be ordered)") {
+    primary_key(id): bigint
+    unique(external_id): varchar[256]
+    not_null(name): varchar[256]
+    not_null(price): number
+    column(count_in_stock): number
+    ---
+    column(version): int
+    column(created_on): timestamp
+    column(created_by): varchar[64]
+    column(last_modified_on): timestamp
+    column(last_modified_by): varchar[64]
+}
+
+Table(CUSTOMER, "Customer\n(customers of the application)") {
+    primary_key(id) bigint
+    unique(user_id) varchar[64]
+    unique(name) varchar[256]
+    unique(address) varchar[1024]
+    unique(e_mail) varchar[256]
+}
+
+Table(ORDER, "Orders") {
+    primary_key(id) bigint
+    foreign_key(customer_id): bigint
+    column(order_date): timestamp
+    column(delivery_date): timestamp
+}
+
+Table(ORDER_ITEM, "Order Items\n(List of items in order)") {
+    primary_key(id) bigint
+    foreign_key(order_id): bigint
+    foreign_key(product_id): bigint
+    not_null(units): number
+    not_null(unit_price): number
+}
+
+ORDER_ITEM "*" --> "1" ORDER
+ORDER "*" --> "1" CUSTOMER : "Customer to which\nthe order belongs"
+ORDER_ITEM "*" --> "1" PRODUCT : "Ordered product"
+
+@enduml
