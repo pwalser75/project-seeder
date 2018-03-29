@@ -44,7 +44,6 @@ tasks.withType(org.asciidoctor.gradle.AsciidoctorTask) { docTask ->
         'project-name': project.name,
         'project-group': project.group,
         'project-version': project.version,
-        'source-highlighter': 'coderay',
         'toc': 'left',
         'icons': 'font',
         'linkattrs': 'true',
@@ -52,9 +51,13 @@ tasks.withType(org.asciidoctor.gradle.AsciidoctorTask) { docTask ->
 		'allow-uri-read': 'true'
 }
 
+
 task generateHTML(type: org.asciidoctor.gradle.AsciidoctorTask) {
     backends = ['html5']
     dependsOn copyHtmlImages
+    attributes \
+        'source-highlighter': 'highlightjs',
+        'highlightjs-theme': 'hybrid'
     mustRunAfter copyHtmlImages
 }
 
@@ -66,7 +69,8 @@ task generatePDF(type: org.asciidoctor.gradle.AsciidoctorTask) {
         'pdf-stylesdir': 'theme',
         'pdf-style': 'idx',
         'pdf-fontsdir': "theme/fonts",
-        'imagesdir': file('build/docs/pdf/images').path
+        'imagesdir': file('build/docs/pdf/images').path,
+        'source-highlighter': 'coderay'
     backends = ['pdf']
 }
 
