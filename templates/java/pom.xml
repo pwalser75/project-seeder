@@ -12,10 +12,15 @@
     <prerequisites>
         <maven>3.0</maven>
     </prerequisites>
-	
+
     <build>
-		<defaultGoal>clean install</defaultGoal>
-    </build> 
+        <defaultGoal>clean install</defaultGoal>
+    </build>
+
+    <properties>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+    </properties>
 
     <dependencies>
         <dependency>
