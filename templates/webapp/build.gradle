@@ -1,5 +1,15 @@
+buildscript {
+    repositories {
+        jcenter()
+    }
+
+    dependencies {
+        classpath 'com.bmuschko:gradle-cargo-plugin:2.2.3'
+    }
+}
+
 apply plugin: 'war'
-apply plugin: 'maven'
+apply plugin: 'com.bmuschko.cargo'
 
 defaultTasks 'clean', 'build'
 
@@ -10,15 +20,8 @@ version = '${projectVersion}'
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
-sourceSets {
-    main { output.resourcesDir = output.classesDir }
-    test { output.resourcesDir = output.classesDir }
-}
-
 repositories {
     jcenter()
-    mavenLocal()
-    mavenCentral()
 }
 
 compileJava.options.encoding = 'UTF-8'
@@ -30,7 +33,7 @@ def dateTimeFormat = java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd HH
 def buildDate = java.time.LocalDateTime.now()
 
 war {
-	archiveName '${projectName}.war'
+    archiveName 'webapp-project.war'
     manifest {
         attributes(
                 "Name": project.name,
@@ -65,6 +68,9 @@ ext.libs = [
 ]
 
 dependencies {
+    def cargoVersion = '1.6.7'
+    cargo "org.codehaus.cargo:cargo-core-uberjar:$cargoVersion", "org.codehaus.cargo:cargo-ant:$cargoVersion"
+
     providedCompile libs.jee
     compile libs.jaxrs
     compile libs.jaxb
@@ -75,3 +81,21 @@ dependencies {
     testCompile libs.mockito
 }
 
+cargo {
+
+    containerId = 'tomcat9x'
+    port = Integer.valueOf(project.property('tomcat.port'))
+
+    deployable {
+        context = 'test'
+    }
+
+    remote {
+        hostname = project.property('tomcat.host')
+        username = project.property('tomcat.user')
+        password = project.property('tomcat.password')
+        containerProperties {
+            property 'cargo.tomcat.ajp.port', 9099
+        }
+    }
+}
