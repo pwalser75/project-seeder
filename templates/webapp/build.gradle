@@ -90,6 +90,14 @@ cargo {
         context = 'test'
     }
 
+    local {
+        installer {
+            installUrl = 'http://www-us.apache.org/dist/tomcat/tomcat-9/v9.0.6/bin/apache-tomcat-9.0.6.zip'
+            downloadDir = file("$buildDir/download")
+            extractDir = file("$buildDir/extract")
+        }
+    }
+
     remote {
         hostname = project.property('tomcat.host')
         username = project.property('tomcat.user')

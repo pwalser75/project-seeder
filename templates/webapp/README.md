@@ -13,18 +13,29 @@
 7. Open the Tomcat manager app (login with the user/password you specified): http://localhost:8080/manager/status
 8. List the deployed applications: http://localhost:8080/manager/html/list
 
-# Build and deploy the application:
+# Build the application
 
-Configure the tomcat user and password in the `gradle.properties` (for the Tomcat user you configured).
-
-To build the application:
+To build the application with Gradle:
 
 	gradle
+
+# Deploy the application (Cargo plugin)
+
+## Local (project)
+The following command will download (`build/download`), extract (`build/extract`) and start a local Tomcat container, and also deploy the application:
+
+    gradle cargoStartLocal
+
+To stop the container:
+
+    gradle cargoStopLocal
+
+## Remote (existing local or remote Tomcat installation)
+Configure the tomcat user and password in the `gradle.properties` (for the Tomcat user you configured).
+To deploy the application WAR on the specified Tomcat, use:
+
+	gradle cargoRedeployRemote
 	
-To build and deploy the application (using the Cargo plugin, which will deploy the WAR on Tomcat):
-
-	gradle clean build cargoRedeployRemote
-
 # Test the endpoints:
 - http://localhost:8080/test/example (Servlet)
 - http://localhost:8080/test/api/example/weather (Web service)
