@@ -1,7 +1,16 @@
-defaultTasks 'clean', 'build', 'install'
+defaultTasks 'clean', 'build'
+
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.github.ben-manes:gradle-versions-plugin:0.17.0'
+    }
+}
 
 apply plugin: 'java'
-apply plugin: 'maven'
+apply plugin: 'com.github.ben-manes.versions'
 
 description = '${projectDescription}'
 group = '${projectGroup}'
@@ -12,15 +21,7 @@ targetCompatibility = 1.8
 
 repositories {
     jcenter()
-    mavenLocal()
-    mavenCentral()
 }
-
-sourceSets {
-    main { output.resourcesDir = output.classesDir }
-    test { output.resourcesDir = output.classesDir }
-}
-jar { duplicatesStrategy = 'exclude' }
 
 compileJava.options.encoding = 'UTF-8'
 tasks.withType(JavaCompile) {
@@ -40,18 +41,32 @@ jar {
     }
 }
 
+dependencyUpdates.resolutionStrategy = {
+    componentSelection { rules ->
+        rules.all { ComponentSelection selection ->
+            boolean rejected = ['alpha', 'beta', 'rc', 'cr', 'm'].any { qualifier ->
+                selection.candidate.version ==~ /(?i).*[.-]${qualifier}[.\d-]*/
+            }
+            if (rejected) {
+                selection.reject('Release candidate')
+            }
+        }
+    }
+}
+
+
 ext.libs = [
         testbase: [
                 "junit:junit:4.12",
-                "org.mockito:mockito-core:2.4.1"
+                "org.mockito:mockito-core:2.18.0"
         ],
         loggingAPI   : [
-                "org.slf4j:slf4j-api:1.7.22"
+                "org.slf4j:slf4j-api:1.7.25"
         ],
         loggingImpl  : [
-                "org.slf4j:jcl-over-slf4j:1.7.22",
-                "org.slf4j:jul-to-slf4j:1.7.22",
-                "ch.qos.logback:logback-classic:1.1.8"
+                "org.slf4j:jcl-over-slf4j:1.7.25",
+                "org.slf4j:jul-to-slf4j:1.7.25",
+                "ch.qos.logback:logback-classic:1.2.3"
         ]
 ]
 
