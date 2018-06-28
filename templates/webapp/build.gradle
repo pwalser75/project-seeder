@@ -4,7 +4,7 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.bmuschko:gradle-cargo-plugin:2.2.3'
+        classpath 'com.bmuschko:gradle-cargo-plugin:2.3'
     }
 }
 
@@ -44,41 +44,50 @@ war {
 }
 
 ext.libs = [
-        jee        : "javax:javaee-api:7.0",
-        junit      : "junit:junit:4.12",
-        mockito    : "org.mockito:mockito-core:2.3.0",
-        loggingAPI : [
-                "org.slf4j:slf4j-api:1.7.22"
+        jee              : 'javax:javaee-api:7.0',
+        javaCompatibility: [
+                'javax.xml.bind:jaxb-api:2.2.11',
+                'javax.activation:activation:1.1.1'
         ],
-        loggingImpl: [
-                "org.slf4j:jcl-over-slf4j:1.7.22",
-                "org.slf4j:jul-to-slf4j:1.7.22",
-                "ch.qos.logback:logback-classic:1.1.8"
+        junit            : 'junit:junit:4.12',
+        loggingAPI       : [
+                'org.slf4j:slf4j-api:1.7.22'
         ],
-        jaxb       : [
-                "com.fasterxml.jackson.core:jackson-databind:2.8.5",
-                "com.fasterxml.jackson.module:jackson-module-jaxb-annotations:2.8.5"
+        loggingImpl      : [
+                'org.slf4j:jcl-over-slf4j:1.7.22',
+                'org.slf4j:jul-to-slf4j:1.7.22',
+                'ch.qos.logback:logback-classic:1.1.8'
         ],
-        jaxrs      : [
-                "javax.ws.rs:javax.ws.rs-api:2.0.1",
-                "org.glassfish:javax.json:1.0.4",
-                "org.glassfish.jersey.containers:jersey-container-servlet:2.25",
-                "org.glassfish.jersey.media:jersey-media-json-jackson:2.25"
+        json             : [
+                'com.fasterxml.jackson.core:jackson-databind:2.8.5',
+                'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.8.5'
+        ],
+        jaxrs            : [
+                'org.glassfish.jersey.containers:jersey-container-servlet:2.25',
+                'org.glassfish.jersey.media:jersey-media-json-jackson:2.25'
+        ],
+        freemarker: [
+                'org.freemarker:freemarker:2.3.20'
+        ],
+        cargo            : [
+                'org.codehaus.cargo:cargo-core-uberjar:1.6.8',
+                'org.codehaus.cargo:cargo-ant:1.6.8'
         ]
 ]
 
+
 dependencies {
-    def cargoVersion = '1.6.7'
-    cargo "org.codehaus.cargo:cargo-core-uberjar:$cargoVersion", "org.codehaus.cargo:cargo-ant:$cargoVersion"
+    cargo libs.cargo
 
     providedCompile libs.jee
     compile libs.jaxrs
-    compile libs.jaxb
+    compile libs.javaCompatibility
+    compile libs.json
+    compile libs.freemarker
     compile libs.loggingAPI
     runtime libs.loggingImpl
 
     testCompile libs.junit
-    testCompile libs.mockito
 }
 
 cargo {
@@ -92,9 +101,9 @@ cargo {
 
     local {
         installer {
-            installUrl = 'http://www-us.apache.org/dist/tomcat/tomcat-9/v9.0.6/bin/apache-tomcat-9.0.6.zip'
-            downloadDir = file("$buildDir/download")
-            extractDir = file("$buildDir/extract")
+            installUrl = "http://mirror.switch.ch/mirror/apache/dist/tomcat/tomcat-9/v9.0.10/bin/apache-tomcat-9.0.10.zip"
+            downloadDir = file("container/download")
+            extractDir = file("container/extract")
         }
     }
 
@@ -106,4 +115,14 @@ cargo {
             property 'cargo.tomcat.ajp.port', 9099
         }
     }
+}
+
+task deploy (dependsOn: ['clean', 'build', 'cargoRedeployRemote']) {
+    group = 'Deploy'
+    description = 'Build the WAR and deploy it to an existing Tomcat installation'
+}
+
+task run (dependsOn: ['clean', 'build', 'cargoRunLocal']) {
+    group = 'Deploy'
+    description = 'Build the WAR and deploy it to a local Tomcat installation'
 }

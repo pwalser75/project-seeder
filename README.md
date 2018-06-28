@@ -48,6 +48,10 @@ Project created at: d:\temp\example-webservice
 
 To create your own templates, create a directory within the **templates** folder. The folder name will be the name of the template. When processing the template, all files within the chosen template folder get copied to the chosen target directory, replacing following placeholders in files(with suffixes `"txt", "md", "xml", "java", "gradle", "ts", "js", "json"`) and directory names:
 
+ - `${user}`: creation user name (system property: `user.name`)
+ - `${date}`: current date (yyyy-MM-ss)
+ - `${datetime}`: current date and time (yyyy-MM-ss HH:mm)
+ - `${projectGroup}`: project group
  - `${projectGroup}`: project group
  - `${projectName}`: project name
  - `${projectDescription}`: project description

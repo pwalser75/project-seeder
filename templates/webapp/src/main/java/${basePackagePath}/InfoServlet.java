@@ -1,28 +1,27 @@
 package ${basePackage};
 
-        import javax.servlet.ServletException;
-        import javax.servlet.annotation.WebServlet;
-        import javax.servlet.http.Cookie;
-        import javax.servlet.http.HttpServlet;
-        import javax.servlet.http.HttpServletRequest;
-        import javax.servlet.http.HttpServletResponse;
-        import java.io.IOException;
-        import java.io.PrintWriter;
-        import java.io.Writer;
-        import java.security.Principal;
-        import java.util.Enumeration;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.Writer;
+import java.security.Principal;
+import java.util.Enumeration;
 
 /**
- * Example servlet
+ * Info servlet - prints request information
+ *
+ * @author ${user}
+ * @since ${date}
  */
-@WebServlet(
-        description = "Example Servlet",
-        urlPatterns = {"/example"}
-)
-public class ExampleServlet extends HttpServlet {
+@WebServlet("/info")
+public class InfoServlet extends HttpServlet {
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 
         PrintWriter writer = new PrintWriter(resp.getWriter());
 
@@ -30,15 +29,7 @@ public class ExampleServlet extends HttpServlet {
         writer.write("<head>");
         writer.write("<title>Example Servlet</title>");
         writer.write("</head>");
-        writer.write("<style>");
-        writer.write("@import url('https://fonts.googleapis.com/css?family=Lato:300,400,700,900');");
-        writer.write("* { font-family:Lato, Calibri, sans-serif; color: #444455; }");
-        writer.write("body { padding: 20px; }");
-        writer.write("h1, h2, h3 { font-weight: 900; }");
-        writer.write("h1 { margin-top:0; }");
-        writer.write("h4 { margin-bottom:0; }");
-        writer.write("b { font-weight: 900; }");
-        writer.write("</style>");
+        writer.write("<link rel=\"stylesheet\" type=\"text/css\" href=\"style.css\">");
         writer.write("<body>");
         writer.write("<h4>Example Servlet</h4>");
 
@@ -92,7 +83,7 @@ public class ExampleServlet extends HttpServlet {
         writer.write("</ul>");
 
         writer.write("<h3>Example REST service</h3>");
-        writer.write("<a href=\"api/example\">Example Web Service Endpoint (<code>GET /api/example</code>)</a>");
+        writer.write("<a href=\"api/weather\">Example Web Service Endpoint (<code>GET /api/weather</code>)</a>");
 
         writer.write("</body>");
         writer.write("</html>");

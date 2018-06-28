@@ -1,4 +1,4 @@
-package ${basePackage}.rest.dto.type;
+package ${basePackage}.webservice.dto.type;
 
 /**
  * Weather condition enum

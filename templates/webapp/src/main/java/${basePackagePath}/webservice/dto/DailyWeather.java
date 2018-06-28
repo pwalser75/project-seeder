@@ -1,25 +1,24 @@
-package ${basePackage}.rest.dto;
+package ${basePackage}.webservice.dto;
 
-import ${basePackage}.rest.dto.converter.LocalDateConverter;
-import ${basePackage}.rest.dto.type.WeatherCondition;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import ${basePackage}.webservice.dto.type.WeatherCondition;
 
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.time.LocalDate;
 
 /**
- * Daily weather data
+ * Daily weather data DTO
  */
-@XmlRootElement(name = "daily-weather")
 public class DailyWeather {
 
+    @JsonProperty("date")
     private LocalDate date;
+
+    @JsonProperty("temperature")
     private double temperatureCelsius;
+
+    @JsonProperty("condition")
     private WeatherCondition weatherCondition;
 
-    @XmlJavaTypeAdapter(LocalDateConverter.class)
-    @XmlElement(name = "date")
     public LocalDate getDate() {
         return date;
     }
@@ -28,7 +27,6 @@ public class DailyWeather {
         this.date = date;
     }
 
-    @XmlElement(name = "temperature")
     public double getTemperatureCelsius() {
         return temperatureCelsius;
     }
@@ -37,7 +35,6 @@ public class DailyWeather {
         this.temperatureCelsius = temperatureCelsius;
     }
 
-    @XmlElement(name = "condition")
     public WeatherCondition getWeatherCondition() {
         return weatherCondition;
     }

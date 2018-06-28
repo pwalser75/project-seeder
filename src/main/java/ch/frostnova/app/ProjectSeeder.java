@@ -11,6 +11,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
@@ -31,6 +34,9 @@ public class ProjectSeeder {
     private final static File TEMPLATES_DIR = new File("templates");
     private final static List<String> FILTER_FILE_SUFFIXES = Arrays.asList("txt", "md", "xml", "java", "gradle", "ts", "js", "json", "adoc", "puml");
 
+    private final static DateTimeFormatter DATE__FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    private final static DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+
     public static void main(String[] args) throws IOException {
 
         System.out.println(TEMPLATES_DIR.getAbsolutePath());
@@ -38,20 +44,23 @@ public class ProjectSeeder {
     }
 
     public ProjectSeeder() throws IOException {
-        projectWizard();
+        runProjectWizard();
     }
 
-    private void projectWizard() throws IOException {
+    private void runProjectWizard() throws IOException {
         List<ProjectTemplate> availableTemplates = getAvailableTemplates();
         if (availableTemplates.isEmpty()) {
             System.err.println("No templates available");
             return;
         }
-        System.out.println("Available templates:");
-        availableTemplates.forEach(t -> System.out.println("- " + t.getName() + "\n    " + t.getDescription()));
+        System.out.println("Available templates:\n");
+        availableTemplates.forEach(t -> System.out.println("- " + t.getName() + "\n  " + t.getDescription() + "\n"));
 
         ProjectTemplate template = pickTemplate(availableTemplates);
         Map<String, String> parameters = new HashMap<>();
+        parameters.put("user", System.getProperty("user.name"));
+        parameters.put("date", LocalDate.now().format(DATE__FORMATTER));
+        parameters.put("datetime", LocalDateTime.now().format(DATE_TIME_FORMATTER));
         parameters.put("template.name", template.getName());
         parameters.put("template.description", template.getDescription());
         String projectName = promptParameter("Project name", template.getName().toLowerCase().replaceAll("\\s+", "-") + "-project", ProjectTemplate.ParameterType.identifier.getPattern());
