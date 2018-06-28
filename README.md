@@ -17,11 +17,25 @@ java -jar build\libs\project-seeder-1.0.0-SNAPSHOT.jar
 Usage example:
 ```
 Available templates:
-- .gradle
-- jee
-- simple
-- spring-boot
-- webapp
+
+- CDI-JavaSE
+  Simple Java 8 project with CDI 2.0 - JavaSE
+
+- Documentation
+  AsciiDoc based documentation project with PDF/HTML5 output
+
+- JEE
+  Multi-module Java EE 7 project
+
+- Java
+  Simple Java 8 project with logging and test (JUnit/Mockito)
+
+- Spring-Boot
+  Spring Boot project with JAX-RS, JAX-B and JPA
+
+- Webapp
+  Java web project with Servlets, Freemarker templates and a REST/JSON web service
+
 Choose template: web
 Choose template (webapp):
 Project group (org.test): ch.frostnova
