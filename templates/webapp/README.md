@@ -32,4 +32,5 @@ To deploy the application WAR on the specified Tomcat, use:
 - http://localhost:8080/test/hello (Hello Servlet)
 - http://localhost:8080/test/info (Info Servlet - prints request information)
 - http://localhost:8080/test/template (Example Servlet with Freemarker)
+- http://localhost:8080/test/notes (Example Servlet with POST, adding notes to session)
 - http://localhost:8080/test/api/weather (Web service)

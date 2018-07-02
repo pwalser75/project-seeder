@@ -24,3 +24,34 @@ h4 {
 b {
     font-weight: 900;
 }
+
+table {
+    border-collapse: collapse;
+    width: 75%;
+}
+
+th, td {
+    text-align: left;
+    padding: 5px 10px;
+}
+
+th {
+    font-weight: bold;
+    border-bottom: 1px solid #999999;
+}
+
+div.note {
+    background: #FBE96C;
+    box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.2);
+    padding: 15px;
+    margin: 10px;
+    float: left;
+    width: 200px;
+    min-height: 200px;
+}
+
+div.container:after {
+    content: '';
+    display: block;
+    clear: both;
+}
