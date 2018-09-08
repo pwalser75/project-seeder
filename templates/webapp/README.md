@@ -1,4 +1,6 @@
-# Web application example
+# ${projectDescription}
+
+## Description
 
 ## Build the application
 
