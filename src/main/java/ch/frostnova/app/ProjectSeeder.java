@@ -32,7 +32,7 @@ import java.util.stream.Stream;
 public class ProjectSeeder {
 
     private final static File TEMPLATES_DIR = new File("templates");
-    private final static List<String> FILTER_FILE_SUFFIXES = Arrays.asList("txt", "md", "xml", "java", "gradle", "ts", "js", "json", "adoc", "puml");
+    private final static List<String> FILTER_FILE_SUFFIXES = Arrays.asList("txt", "md", "xml", "java", "gradle", "ts", "js", "json", "adoc", "puml", "gitignore");
 
     private final static DateTimeFormatter DATE__FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     private final static DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
@@ -81,7 +81,7 @@ public class ProjectSeeder {
 
         File outputDir;
         do {
-            String baseOutputDir = promptParameter("Base output dir", new File("..").getAbsolutePath());
+            String baseOutputDir = promptParameter("Base output dir", new File("..").getCanonicalFile().getAbsolutePath());
             outputDir = new File(baseOutputDir, projectName);
             if (outputDir.exists() && outputDir.listFiles() != null && outputDir.listFiles().length > 0) {
                 System.out.println(outputDir.getAbsolutePath() + " already exists, please chose another base output directory.");
@@ -151,7 +151,7 @@ public class ProjectSeeder {
         System.out.println("Seeding project...");
         System.out.println("Template dir: " + templateDir.getAbsolutePath());
         System.out.println("Output dir: " + outputDir.getAbsolutePath());
-        replacements.keySet().stream().sorted().forEach(k -> System.out.println(k + ": " + replacements.get(k)));
+        replacements.keySet().stream().sorted().forEach(k -> System.out.println("- "+k + ": " + replacements.get(k)));
 
         String[] paths = templateDir.list();
         if (paths != null) {
@@ -178,7 +178,7 @@ public class ProjectSeeder {
                     process(templateDir, outputDir, sourcePath + "/" + path, replacements);
                 }
             }
-        } else {
+        } else if (file.canRead()) {
             System.out.print('.');
             if (FILTER_FILE_SUFFIXES.stream().anyMatch(s -> target.getName().endsWith("." + s))) {
                 target.getParentFile().mkdirs();
@@ -204,10 +204,9 @@ public class ProjectSeeder {
     }
 
     private void copyBinary(File src, File dst) throws IOException {
-
         byte[] buffer = new byte[0xFFF];
-        try (BufferedInputStream in = new BufferedInputStream(new FileInputStream(src))) {
-            try (BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream(dst))) {
+        try (BufferedInputStream in = new BufferedInputStream(new FileInputStream(src.getCanonicalFile()))) {
+            try (BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream(dst.getCanonicalFile()))) {
                 int read;
                 while ((read = in.read(buffer)) >= 0) {
                     out.write(buffer, 0, read);
