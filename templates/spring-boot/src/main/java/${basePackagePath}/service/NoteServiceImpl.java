@@ -39,9 +39,11 @@ public class NoteServiceImpl implements NoteService {
     }
 
     @Override
-    public Note save(Note note) {
-        NoteEntity entity = Optional.ofNullable(note.getId()).flatMap(repository::findById).orElseGet(NoteEntity::new);
-        return convert(repository.save(update(entity, note)));
+    public Note save(@NotNull Note note) {
+
+        NoteEntity entity = Optional.ofNullable(note.getId()).map(this::load).orElseGet(NoteEntity::new);
+        entity = update(entity, note);
+        return convert(repository.save(entity));
     }
 
     @Override

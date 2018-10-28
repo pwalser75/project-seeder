@@ -20,11 +20,15 @@ with Maven:
 
 ## Build
 
-To build this project:
-
-with Gradle (default tasks: _clean build_):
+To build this project with Gradle (default tasks: _clean build install_):
 
     gradle
+    
+## Run
+    
+To build this project with Gradle:
+    
+    gradle bootRun
 
 ## API doc (Swagger)
 
