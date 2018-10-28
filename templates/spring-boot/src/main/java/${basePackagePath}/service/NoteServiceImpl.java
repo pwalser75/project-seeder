@@ -16,6 +16,7 @@ import java.util.Spliterator;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
+import javax.validation.constraints.NotNull;
 
 /**
  * Implementation of the NoteService
