@@ -4,44 +4,48 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.transaction.annotation.Transactional;
+import ${basePackage}.api.exception.ResourceNotFoundException;
 import ${basePackage}.api.model.Note;
 import ${basePackage}.api.service.NoteService;
 import ${basePackage}.persistence.NoteEntity;
 import ${basePackage}.persistence.NoteRepository;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Spliterator;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
-@Service
-@EnableTransactionManagement
-@Transactional(readOnly = true)
 /**
  * Implementation of the NoteService
  */
+@Service
+@EnableTransactionManagement
+@Transactional
 public class NoteServiceImpl implements NoteService {
 
     @Autowired
     private NoteRepository repository;
 
     @Override
+    @Transactional(readOnly = true)
     public Note get(long id) {
-        return convert(repository.findOne(id));
+        return convert(load(id));
+    }
+
+    private NoteEntity load(long id) {
+        return repository.findById(id).orElseThrow(ResourceNotFoundException::new);
     }
 
     @Override
-    @Transactional(readOnly = false)
     public Note save(Note note) {
-        NoteEntity entity = new NoteEntity();
-        if (note.getId() != null) {
-            entity = repository.findOne(note.getId());
-        }
+        NoteEntity entity = Optional.ofNullable(note.getId()).flatMap(repository::findById).orElseGet(NoteEntity::new);
         return convert(repository.save(update(entity, note)));
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<Note> list() {
         Spliterator<NoteEntity> spliterator = repository.findAll().spliterator();
         Stream<NoteEntity> stream = StreamSupport.stream(spliterator, false);
@@ -49,10 +53,9 @@ public class NoteServiceImpl implements NoteService {
     }
 
     @Override
-    @Transactional(readOnly = false)
     public void delete(long id) {
-        if (repository.exists(id)) {
-            repository.delete(id);
+        if (repository.existsById(id)) {
+            repository.deleteById(id);
         }
     }
 

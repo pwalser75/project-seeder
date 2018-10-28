@@ -26,7 +26,6 @@ with Gradle (default tasks: _clean build_):
 
     gradle
 
-with Maven (default tasks: _clean install_):
+## API doc (Swagger)
 
-    mvn
-
+API documentation reachable at [https://localhost/swagger-ui.html](https://localhost/swagger-ui.html)

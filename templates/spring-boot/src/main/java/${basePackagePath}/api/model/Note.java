@@ -1,32 +1,36 @@
 package ${basePackage}.api.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import ${basePackage}.api.converter.LocalDateTimeConverter;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
  * DTO for Note
  */
+@ApiModel("Note")
 public class Note implements Serializable {
 
+    @ApiModelProperty(notes = "identifier (generated)")
     @JsonProperty("id")
     private Long id;
 
+    @NotNull
+    @NotBlank
+    @ApiModelProperty(notes = "text of the note, up to 2048 characters")
     @JsonProperty("text")
     private String text;
 
-    @JsonProperty("creation_date")
-    @JsonSerialize(using = LocalDateTimeConverter.Serializer.class)
-    @JsonDeserialize(using = LocalDateTimeConverter.Deserializer.class)
+    @ApiModelProperty(notes = "creation date (generated)")
+    @JsonProperty("creationDate")
     private LocalDateTime creationDate;
 
-    @JsonProperty("modification_date")
-    @JsonSerialize(using = LocalDateTimeConverter.Serializer.class)
-    @JsonDeserialize(using = LocalDateTimeConverter.Deserializer.class)
+    @ApiModelProperty(notes = "last modification date (generated)")
+    @JsonProperty("modificationDate")
     private LocalDateTime modificationDate;
 
     public Note() {

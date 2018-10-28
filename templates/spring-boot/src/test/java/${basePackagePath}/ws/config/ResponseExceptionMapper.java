@@ -1,4 +1,4 @@
-package ${basePackage}.ws;
+package ${basePackage}.ws.config;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.Response;

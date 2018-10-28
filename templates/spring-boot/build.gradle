@@ -2,12 +2,13 @@ defaultTasks 'clean', 'build', 'install'
 
 buildscript {
     repositories {
-        jcenter()
-        mavenCentral()
+		jcenter()
+		mavenLocal()
+		mavenCentral()
     }
     dependencies {
-        classpath("org.springframework.boot:spring-boot-gradle-plugin:1.5.8.RELEASE")
-        classpath 'com.github.ben-manes:gradle-versions-plugin:0.17.0'
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:2.0.6.RELEASE")
+        classpath 'com.github.ben-manes:gradle-versions-plugin:0.20.0'
     }
 }
 
@@ -52,20 +53,27 @@ jar {
 ext.libs = [
         testbase      : [
                 "junit:junit:4.12",
-                "org.mockito:mockito-core:2.12.0"
+                "org.mockito:mockito-core:2.23.0"
         ],
         springBoot    : [
-                "org.springframework.boot:spring-boot-starter-data-jpa:1.5.8.RELEASE",
-                "org.springframework.boot:spring-boot-starter-jersey:1.5.8.RELEASE"
+                "org.springframework.boot:spring-boot-starter-data-jpa:2.0.6.RELEASE",
+                "org.springframework.boot:spring-boot-starter-web:2.0.6.RELEASE",
+                "org.springframework.boot:spring-boot-starter-aop:2.0.6.RELEASE",
+                "org.aspectj:aspectjweaver:1.9.2"
         ],
         springBootTest: [
-                "org.springframework.boot:spring-boot-starter-test:1.5.8.RELEASE"
+                "org.springframework.boot:spring-boot-starter-test:2.0.6.RELEASE"
         ],
         hsqldb        : [
-                "org.hsqldb:hsqldb:2.4.0"
+                "org.hsqldb:hsqldb:2.4.1"
         ],
         swagger       : [
-                'io.swagger:swagger-jersey2-jaxrs:1.5.17'
+                "io.springfox:springfox-swagger2:2.9.2",
+                "io.springfox:springfox-swagger-ui:2.9.2"
+        ],
+        jaxrsClient: [
+                "org.glassfish.jersey.core:jersey-client:2.25.1",
+                "org.glassfish.jersey.media:jersey-media-json-jackson:2.25.1"
         ]
 ]
 
@@ -74,5 +82,6 @@ dependencies {
     compile libs.swagger
     testCompile libs.testbase
     testCompile libs.springBootTest
+    testCompile libs.jaxrsClient
     runtime libs.hsqldb
 }

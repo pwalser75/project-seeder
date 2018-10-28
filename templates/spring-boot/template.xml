@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <template>
     <name>Spring-Boot</name>
-    <description>Spring Boot project with JAX-RS, JAX-B and JPA</description>
+    <description>Spring Boot project with REST controller, service and repository</description>
     <parameters>
         <parameter name="projectGroup" label="Project group" type="identifier" default="org.test"/>
         <parameter name="projectDescription" label="Project description" type="text" default="Example ${template.name} Project"/>

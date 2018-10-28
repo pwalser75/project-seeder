@@ -1,17 +1,14 @@
-package ${basePackage}.ws;
+package ${basePackage}.ws.client;
 
 import ${basePackage}.api.model.Note;
+import ${basePackage}.ws.config.ResponseExceptionMapper;
+import ${basePackage}.ws.config.RestClientConfig;
 
 import javax.ws.rs.client.Client;
-import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.Invocation;
 import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.Response;
-import org.glassfish.jersey.client.ClientProperties;
-import org.glassfish.jersey.logging.LoggingFeature;
-import java.io.InputStream;
-import java.security.KeyStore;
 import java.util.List;
 
 /**
@@ -24,30 +21,12 @@ public class NoteClient implements AutoCloseable {
 
     public NoteClient(String baseURL) {
         this.baseURL = baseURL;
-        ClientBuilder clientBuilder = createClientBuilder();
-        client = clientBuilder.build();
+        client = RestClientConfig.clientBuilder().build();
     }
 
+    @Override
     public void close() {
         client.close();
-    }
-
-    private static ClientBuilder createClientBuilder() {
-
-        try (InputStream in = NoteClient.class.getResourceAsStream("/client-truststore.jks")) {
-            KeyStore truststore = KeyStore.getInstance(KeyStore.getDefaultType());
-            truststore.load(in, "truststore".toCharArray());
-
-            return ClientBuilder.newBuilder()
-                    .trustStore(truststore)
-                    .property(ClientProperties.CONNECT_TIMEOUT, 500)
-                    .property(ClientProperties.READ_TIMEOUT, 5000)
-					.property(LoggingFeature.LOGGING_FEATURE_VERBOSITY_CLIENT, LoggingFeature.Verbosity.PAYLOAD_ANY)
-					.property(LoggingFeature.LOGGING_FEATURE_LOGGER_LEVEL_CLIENT, "WARNING")
-                    .hostnameVerifier((hostname, sslSession) -> "localhost".equals(hostname));
-        } catch (Exception ex) {
-            throw new RuntimeException("Unable to load client truststore", ex);
-        }
     }
 
     /**
@@ -94,7 +73,7 @@ public class NoteClient implements AutoCloseable {
                 .request()
                 .buildPost(Entity.json(note));
 
-        Response response = ResponseExceptionMapper.check(invocation.invoke(), 200);
+        Response response = ResponseExceptionMapper.check(invocation.invoke(), 201);
         return response.readEntity(Note.class);
     }
 
