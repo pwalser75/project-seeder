@@ -18,23 +18,20 @@ Usage example:
 ```
 Available templates:
 
-- CDI-JavaSE
-  Simple Java 8 project with CDI 2.0 - JavaSE
-
-- Documentation
-  AsciiDoc based documentation project with PDF/HTML5 output
-
-- JEE
-  Multi-module Java EE 7 project
-
 - Java
   Simple Java 8 project with logging and test (JUnit/Mockito)
 
-- Spring-Boot
-  Spring Boot project with JAX-RS, JAX-B and JPA
-
 - Webapp
   Java web project with Servlets, Freemarker templates and a REST/JSON web service
+  
+- Spring-Boot
+  Spring Boot project with REST controller, service and repository
+
+- JEE
+  Multi-module Java EE 7 project
+  
+- Documentation
+  AsciiDoc based documentation project with PDF/HTML5 output
 
 Choose template: web
 Choose template (webapp):
