@@ -21,11 +21,11 @@
         </encoder>
     </appender>
 
-    <!-- log performance info to another file -->
-    <appender name="PERFORMANCE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>logs/performance.log</file>
+    <!-- log access info to another file -->
+    <appender name="ACCESS" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>logs/access.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>logs/archive/performance.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <fileNamePattern>logs/archive/access.%d{yyyy-MM-dd}.log</fileNamePattern>
             <maxHistory>30</maxHistory>
             <totalSizeCap>100MB</totalSizeCap>
         </rollingPolicy>
@@ -39,8 +39,8 @@
     <logger name="org.hibernate" level="warn"/>
     <logger name="org.hibernate.SQL" level="debug"/>
 
-    <logger name="${basePackage}.interceptor" level="info" additivity="false">
-        <appender-ref ref="PERFORMANCE"/>
+    <logger name="${basePackage}.ws.filter.AccessLogFilter" level="info" additivity="false">
+        <appender-ref ref="ACCESS"/>
         <appender-ref ref="CONSOLE"/>
     </logger>
 
