@@ -13,6 +13,8 @@ import org.springframework.boot.web.servlet.server.ServletWebServerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import java.util.Optional;
+
 /**
  * Tomcat settings: enforce HTTPS, redirect from HTTP port to HTTPS.
  */
@@ -21,8 +23,8 @@ import org.springframework.context.annotation.Configuration;
 @EnableConfigurationProperties
 public class TomcatConfig {
 
-    @Value("${http.server.port}")
-    private int serverPortHttp;
+    @Value("${http.server.port:#{null}}")
+    private Integer serverPortHttp;
 
     @Value("${server.port}")
     private int serverPortHttps;
@@ -30,7 +32,7 @@ public class TomcatConfig {
     @Bean
     public ServletWebServerFactory servletContainer() {
         TomcatServletWebServerFactory tomcat = new TomcatFactory();
-        tomcat.addAdditionalTomcatConnectors(createHttpConnector());
+        createHttpConnector().ifPresent(tomcat::addAdditionalTomcatConnectors);
         return tomcat;
     }
 
@@ -46,12 +48,15 @@ public class TomcatConfig {
         }
     }
 
-    private Connector createHttpConnector() {
-        Connector connector = new Connector(Http11NioProtocol.class.getName());
-        connector.setScheme("http");
-        connector.setSecure(false);
-        connector.setPort(serverPortHttp);
-        connector.setRedirectPort(serverPortHttps);
-        return connector;
+    private Optional<Connector> createHttpConnector() {
+
+        return Optional.ofNullable(serverPortHttp).map(httpPort -> {
+            Connector connector = new Connector(Http11NioProtocol.class.getName());
+            connector.setScheme("http");
+            connector.setSecure(false);
+            connector.setPort(serverPortHttp);
+            connector.setRedirectPort(serverPortHttps);
+            return connector;
+        });
     }
 }
