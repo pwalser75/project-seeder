@@ -39,7 +39,7 @@
     <logger name="org.hibernate" level="warn"/>
     <logger name="org.hibernate.SQL" level="debug"/>
 
-    <logger name="${basePackage}.ws.filter.AccessLogFilter" level="info" additivity="false">
+    <logger name="org.test.spring.boot.project.ws.filter.AccessLogFilter" level="info" additivity="false">
         <appender-ref ref="ACCESS"/>
         <appender-ref ref="CONSOLE"/>
     </logger>
