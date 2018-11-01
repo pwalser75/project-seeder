@@ -1,5 +1,6 @@
 package ${basePackage}.ws;
 
+
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -11,6 +12,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import ${basePackage}.api.model.Note;
 import ${basePackage}.ws.client.NoteClient;
 
+import javax.ws.rs.BadRequestException;
 import javax.ws.rs.NotFoundException;
 
 /**
@@ -80,6 +82,22 @@ public class NoteEndpointTest {
                 Assert.fail("Expected: NotFoundException");
             } catch (NotFoundException expected) {
                 //
+            }
+        }
+    }
+
+    @Test(expected = BadRequestException.class)
+    public void testValidation() {
+        final String baseURL = "https://localhost:" + port + "/api/notes";
+        log.info("BASE URL: " + baseURL);
+        try (final NoteClient noteClient = new NoteClient(baseURL)) {
+
+            Note note = new Note();
+
+            try {
+                noteClient.create(note);
+            } catch (BadRequestException ex) {
+                throw ex;
             }
         }
     }

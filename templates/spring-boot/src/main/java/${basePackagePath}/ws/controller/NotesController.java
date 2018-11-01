@@ -12,6 +12,7 @@ import ${basePackage}.api.model.Note;
 import ${basePackage}.api.service.NoteService;
 import ${basePackage}.interceptor.PerformanceLogging;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -73,7 +74,8 @@ public class NotesController {
     @PostMapping(consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     @ApiOperation(value = "Create a new note", response = Note.class)
-    public Note create(@RequestBody Note note) {
+    public Note create(@RequestBody @Valid Note note) {
+        note.setId(null);
         return noteService.save(note);
     }
 
@@ -86,7 +88,7 @@ public class NotesController {
     @PutMapping(path = "/{id}", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @ApiOperation(value = "Update an existing note", response = Note.class)
-    public void update(@PathVariable("id") long id, @RequestBody Note note) {
+    public void update(@PathVariable("id") long id, @RequestBody @Valid Note note) {
         note.setId(id);
         noteService.save(note);
     }
