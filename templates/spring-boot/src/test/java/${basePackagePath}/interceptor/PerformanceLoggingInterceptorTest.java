@@ -4,9 +4,6 @@ import org.junit.Test;
 
 /**
  * Test for {@link PerformanceLoggingInterceptor}
- *
- * @author wap
- * @since 05.11.2018
  */
 public class PerformanceLoggingInterceptorTest {
 
