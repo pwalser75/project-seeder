@@ -29,18 +29,18 @@ import java.util.stream.Collectors;
  * <li>Spring Data <code>Repository</code></li>
  * </ul>
  * Example log output:
- * <code><pre>
- * 15:12:22.316 INFO  [main] | PerformanceLoggingInterceptor - Test.a() → 211.20 ms, self: 51.30 ms
- * &nbsp;&nbsp;&#10551; Test.b() → java.lang.IllegalArgumentException, 134.04 ms, self: 102.04 ms
- * &nbsp;&nbsp;&nbsp;&nbsp;&#10551; Test.c() &#8594; 11.01 ms
- * &nbsp;&nbsp;&nbsp;&nbsp;&#10551; Test.c() &#8594; 10.01 ms
- * &nbsp;&nbsp;&nbsp;&nbsp;&#10551; Test.c() &#8594; 10.95 ms
- * &nbsp;&nbsp;&nbsp;&nbsp;&#10551; Test.d() &#8594; java.lang.ArithmeticException, 0.03 ms
- * &nbsp;&nbsp;&#10551; Test.e() &#8594; 25.86 ms
- * 15:12:22.339 INFO  [main] | PerformanceLoggingInterceptor - Other.x() &#8594; 12.55 ms, self: 2.57 ms
- * &nbsp;&nbsp;&#10551; Other.y() &#8594; 9.98 ms, self: 7.92 ms
- * &nbsp;&nbsp;&nbsp;&nbsp;&#10551; Other.z() &#8594; 2.06 ms
- * </pre></code>
+ * <pre><code>
+ * 15:12:22.316 INFO  [main] | PerformanceLoggingInterceptor - Test.a() &rarr; 211.20 ms, self: 51.30 ms
+ * &nbsp;&nbsp;&lfloor; Test.b() &rarr; java.lang.IllegalArgumentException, 134.04 ms, self: 102.04 ms
+ * &nbsp;&nbsp;&nbsp;&nbsp;&lfloor; Test.c() &rarr; 11.01 ms
+ * &nbsp;&nbsp;&nbsp;&nbsp;&lfloor; Test.c() &rarr; 10.01 ms
+ * &nbsp;&nbsp;&nbsp;&nbsp;&lfloor; Test.c() &rarr; 10.95 ms
+ * &nbsp;&nbsp;&nbsp;&nbsp;&lfloor; Test.d() &rarr; java.lang.ArithmeticException, 0.03 ms
+ * &nbsp;&nbsp;&lfloor; Test.e() &rarr; 25.86 ms
+ * 15:12:22.339 INFO  [main] | PerformanceLoggingInterceptor - Other.x() &rarr; 12.55 ms, self: 2.57 ms
+ * &nbsp;&nbsp;&lfloor; Other.y() &rarr; 9.98 ms, self: 7.92 ms
+ * &nbsp;&nbsp;&nbsp;&nbsp;&lfloor; Other.z() &rarr; 2.06 ms
+ * </code></pre>
  */
 @Aspect
 @Configuration
@@ -49,8 +49,12 @@ public class PerformanceLoggingInterceptor {
 
     private static Logger log = LoggerFactory.getLogger(PerformanceLoggingInterceptor.class);
 
-    /**
+     /**
      * Bind aspect to any Spring @Service, @Controller, @RestController and Repository
+     *
+     * @param joinPoint aspect join point
+     * @return invocation result
+     * @throws Throwable invocation exception
      */
     @Around("@within(${basePackage}.interceptor.PerformanceLogging) " +
             "|| @within(org.springframework.stereotype.Service) " +
