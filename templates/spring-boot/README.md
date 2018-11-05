@@ -8,8 +8,9 @@ Spring boot project with
 * Persistence (Spring Data Repository, JPA)
 * Service Layer
 * REST controller (CRUD)
-* TLS enabled and properly configured (redirect HTTP to HTTPS).
+* TLS enabled and properly configured (optionally redirecting HTTP to HTTPS when enabling the HTTP port).
 * Access Log filter, logging all requests (method, URI, response status and execution time)
+* Performance Logging filter, logging performance tree of nested service calls
 
 ### Setting up TLS
 

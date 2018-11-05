@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import ${basePackage}.api.model.Note;
 import ${basePackage}.ws.client.NoteClient;
@@ -20,6 +21,7 @@ import javax.ws.rs.NotFoundException;
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@ActiveProfiles("performance-logging")
 public class NoteEndpointTest {
 
     private final Logger log = LoggerFactory.getLogger(getClass());

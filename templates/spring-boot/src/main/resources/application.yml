@@ -10,7 +10,8 @@ server:
     key-store-password: "keystore"
     key-password: "keystore"
 
-http.server.port: 80
+# HTTP port for redirection to HTTPS
+# http.server.port: 80
 
 spring.datasource:
   url: jdbc:h2:mem:testdb;DB_CLOSE_ON_EXIT=FALSE

@@ -14,6 +14,8 @@ The project-seeder JAR file is executable, and will lead you through the creatio
 ```
 java -jar build\libs\project-seeder-1.0.0-SNAPSHOT.jar
 ```
+You can also use the start scripts (`project-seeder.cmd` for Windows, `project-seeder.sh` for Unix-based systems) instead.
+
 Usage example:
 ```
 Available templates:
