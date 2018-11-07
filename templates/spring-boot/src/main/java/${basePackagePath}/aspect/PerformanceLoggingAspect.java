@@ -1,12 +1,12 @@
-package ${basePackage}.interceptor;
+package ${basePackage}.aspect;
 
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
+import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -18,9 +18,9 @@ import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
 
 /**
- * Performance logging interceptor, logs performance and result state (ok or exception) for (nested) service calls.<br>
+ * Performance logging aspect, logs performance and result state (ok or exception) for (nested) service calls.<br>
  * Activated by profile
- * <code>performance-logging</code>, the interceptor will log performance for any
+ * <code>performance-logging</code>, the aspect will log performance for any
  * <ul>
  * <li>classes annotated with <code>@PerformanceLogging</code></li>
  * <li>Spring <code>@Service</code></li>
@@ -30,24 +30,24 @@ import java.util.stream.Collectors;
  * </ul>
  * Example log output:
  * <pre><code>
- * 15:12:22.316 INFO  [main] | PerformanceLoggingInterceptor - Test.a() &rarr; 211.20 ms, self: 51.30 ms
+ * 15:12:22.316 INFO  [main] | PerformanceLoggingAspect - Test.a() &rarr; 211.20 ms, self: 51.30 ms
  * &nbsp;&nbsp;&lfloor; Test.b() &rarr; java.lang.IllegalArgumentException, 134.04 ms, self: 102.04 ms
  * &nbsp;&nbsp;&nbsp;&nbsp;&lfloor; Test.c() &rarr; 11.01 ms
  * &nbsp;&nbsp;&nbsp;&nbsp;&lfloor; Test.c() &rarr; 10.01 ms
  * &nbsp;&nbsp;&nbsp;&nbsp;&lfloor; Test.c() &rarr; 10.95 ms
  * &nbsp;&nbsp;&nbsp;&nbsp;&lfloor; Test.d() &rarr; java.lang.ArithmeticException, 0.03 ms
  * &nbsp;&nbsp;&lfloor; Test.e() &rarr; 25.86 ms
- * 15:12:22.339 INFO  [main] | PerformanceLoggingInterceptor - Other.x() &rarr; 12.55 ms, self: 2.57 ms
+ * 15:12:22.339 INFO  [main] | PerformanceLoggingAspect - Other.x() &rarr; 12.55 ms, self: 2.57 ms
  * &nbsp;&nbsp;&lfloor; Other.y() &rarr; 9.98 ms, self: 7.92 ms
  * &nbsp;&nbsp;&nbsp;&nbsp;&lfloor; Other.z() &rarr; 2.06 ms
  * </code></pre>
  */
 @Aspect
-@Configuration
+@Component
 @Profile("performance-logging")
-public class PerformanceLoggingInterceptor {
+public class PerformanceLoggingAspect {
 
-    private static Logger log = LoggerFactory.getLogger(PerformanceLoggingInterceptor.class);
+    private static Logger log = LoggerFactory.getLogger(PerformanceLoggingAspect.class);
 
      /**
      * Bind aspect to any Spring @Service, @Controller, @RestController and Repository
@@ -56,7 +56,7 @@ public class PerformanceLoggingInterceptor {
      * @return invocation result
      * @throws Throwable invocation exception
      */
-    @Around("@within(${basePackage}.interceptor.PerformanceLogging) " +
+    @Around("@within(${basePackage}.aspect.PerformanceLogging) " +
             "|| @within(org.springframework.stereotype.Service) " +
             "|| @within(org.springframework.stereotype.Controller) " +
             "|| @within(org.springframework.web.bind.annotation.RestController) " +

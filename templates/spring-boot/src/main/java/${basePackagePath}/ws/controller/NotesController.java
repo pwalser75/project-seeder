@@ -10,7 +10,7 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import ${basePackage}.api.model.Note;
 import ${basePackage}.api.service.NoteService;
-import ${basePackage}.interceptor.PerformanceLogging;
+import ${basePackage}.aspect.PerformanceLogging;
 
 import javax.validation.Valid;
 import java.util.List;

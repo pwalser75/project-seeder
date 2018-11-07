@@ -1,16 +1,16 @@
-package ${basePackage}.interceptor;
+package ${basePackage}.aspect;
 
 import org.junit.Test;
 
 /**
- * Test for {@link PerformanceLoggingInterceptor}
+ * Test for {@link PerformanceLoggingAspect}
  */
-public class PerformanceLoggingInterceptorTest {
+public class PerformanceLoggingAspectTest {
 
     @Test
     public void testLog() throws Exception {
 
-        PerformanceLoggingInterceptor.PerformanceLoggingContext context = PerformanceLoggingInterceptor.PerformanceLoggingContext.current();
+        PerformanceLoggingAspect.PerformanceLoggingContext context = PerformanceLoggingAspect.PerformanceLoggingContext.current();
 
         context.enter("Test.a()");
         Thread.sleep(50);

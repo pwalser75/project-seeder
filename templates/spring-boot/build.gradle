@@ -57,9 +57,7 @@ ext.libs = [
         ],
         springBoot    : [
                 "org.springframework.boot:spring-boot-starter-data-jpa:2.1.0.RELEASE",
-                "org.springframework.boot:spring-boot-starter-web:2.1.0.RELEASE",
-                "org.springframework.boot:spring-boot-starter-aop:2.1.0.RELEASE",
-                "org.aspectj:aspectjweaver:1.9.2"
+                "org.springframework.boot:spring-boot-starter-web:2.1.0.RELEASE"
         ],
         springBootTest: [
                 "org.springframework.boot:spring-boot-starter-test:2.1.0.RELEASE"
