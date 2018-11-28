@@ -8,8 +8,8 @@ import java.util.List;
 /**
  * Movie data object
  *
- * @author ${user}
- * @since ${date}
+ * @author pwalser
+ * @since 25.01.2018.
  */
 public class Movie {
 

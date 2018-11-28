@@ -12,8 +12,8 @@ import java.util.Locale;
 /**
  * Freemarker configuration
  *
- * @author ${user}
- * @since ${date}
+ * @author pwalser
+ * @since 27.06.2018
  */
 public class FreemarkerConfig {
 

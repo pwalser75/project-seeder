@@ -9,7 +9,7 @@
 <div class="container">
     <#list notes as note>
         <div class="note">
-            <small>${note.formattedTimestamp}</small>
+            <small>${note.creationTime.toString()}</small>
             <br>
             <b>${note.text}</b>
         </div>

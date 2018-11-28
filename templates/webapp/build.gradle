@@ -106,7 +106,7 @@ cargo {
         configHomeDir = confDir
 
         installer {
-            installUrl = "http://mirror.switch.ch/mirror/apache/dist/tomcat/tomcat-9/v9.0.10/bin/apache-tomcat-9.0.10.zip"
+            installUrl = "https://www-eu.apache.org/dist/tomcat/tomcat-9/v9.0.13/bin/apache-tomcat-9.0.13.zip"
             downloadDir = file("container/download")
             extractDir = file("container/extract")
         }
@@ -130,4 +130,9 @@ task deploy (dependsOn: ['clean', 'build', 'cargoRedeployRemote']) {
 task run (dependsOn: ['clean', 'build', 'cargoRunLocal']) {
     group = 'Deploy'
     description = 'Build the WAR and deploy it to a local Tomcat installation'
+}
+
+task stop (dependsOn: ['cargoStopLocal']) {
+    group = 'Deploy'
+    description = 'Stop the local Tomcat installation'
 }

@@ -13,9 +13,6 @@ import java.util.Enumeration;
 
 /**
  * Info servlet - prints request information
- *
- * @author ${user}
- * @since ${date}
  */
 @WebServlet("/info")
 public class InfoServlet extends HttpServlet {

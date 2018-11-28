@@ -10,9 +10,6 @@ import java.time.LocalDateTime;
 
 /**
  * Hello servlet
- *
- * @author ${user}
- * @since ${date}
  */
 @WebServlet("/hello")
 public class HelloServlet extends HttpServlet {

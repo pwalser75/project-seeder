@@ -5,8 +5,8 @@ import java.time.LocalDate;
 /**
  * Actor data object
  *
- * @author ${user}
- * @since ${date}
+ * @author pwalser
+ * @since 25.01.2018.
  */
 public class Actor {
 

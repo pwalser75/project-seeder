@@ -15,9 +15,6 @@ import java.io.PrintWriter;
 
 /**
  * Template servlet - uses Freemarker to render a data model with a freemarker template (*.ftl)
- *
- * @author ${user}
- * @since ${date}
  */
 @WebServlet("/template")
 public class TemplateServlet extends HttpServlet {
