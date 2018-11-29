@@ -1,26 +1,11 @@
 package ch.frostnova.app;
 
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
+import java.io.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Scanner;
+import java.util.*;
 import java.util.function.Function;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -34,10 +19,14 @@ public class ProjectSeeder {
     private final static File TEMPLATES_DIR = new File("templates");
     private final static List<String> FILTER_FILE_SUFFIXES = Arrays.asList("txt", "md", "xml", "java", "gradle", "ts", "js", "json", "adoc", "puml", "gitignore");
 
-    private final static DateTimeFormatter DATE__FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    private final static DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     private final static DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
-    public static void main(String[] args) throws IOException {
+    private final static String ANSI_RESET = "\u001B[0m";
+    private final static String ANSI_BOLD = "\u001B[1m";
+    private final static String ANSI_UNDERLINE = "\u001B[4m";
+
+    public static void main(final String[] args) throws IOException {
 
         System.out.println(TEMPLATES_DIR.getAbsolutePath());
         new ProjectSeeder();
@@ -48,30 +37,30 @@ public class ProjectSeeder {
     }
 
     private void runProjectWizard() throws IOException {
-        List<ProjectTemplate> availableTemplates = getAvailableTemplates();
+        final List<ProjectTemplate> availableTemplates = getAvailableTemplates();
         if (availableTemplates.isEmpty()) {
             System.err.println("No templates available");
             return;
         }
         System.out.println("Available templates:\n");
-        availableTemplates.forEach(t -> System.out.println("- " + t.getName() + "\n  " + t.getDescription() + "\n"));
+        availableTemplates.forEach(t -> System.out.println("- " + ANSI_BOLD + ANSI_UNDERLINE + t.getName() + ANSI_RESET + "\n  " + t.getDescription() + "\n"));
 
-        ProjectTemplate template = pickTemplate(availableTemplates);
-        Map<String, String> parameters = new HashMap<>();
+        final ProjectTemplate template = pickTemplate(availableTemplates);
+        final Map<String, String> parameters = new HashMap<>();
         parameters.put("user", System.getProperty("user.name"));
-        parameters.put("date", LocalDate.now().format(DATE__FORMATTER));
+        parameters.put("date", LocalDate.now().format(DATE_FORMATTER));
         parameters.put("datetime", LocalDateTime.now().format(DATE_TIME_FORMATTER));
         parameters.put("template.name", template.getName());
         parameters.put("template.description", template.getDescription());
-        String projectName = promptParameter("Project name", template.getName().toLowerCase().replaceAll("\\s+", "-") + "-project", ProjectTemplate.ParameterType.identifier.getPattern());
+        final String projectName = promptParameter("Project name", template.getName().toLowerCase().replaceAll("\\s+", "-") + "-project", ProjectTemplate.ParameterType.identifier.getPattern());
         parameters.put("projectName", projectName);
 
-        for (ProjectTemplate.Parameter parameter : template.getParameters()) {
-            String defaultValue = parameter.getDefaultValue() != null ? replaceAll(parameter.getDefaultValue(), parameters) : null;
+        for (final ProjectTemplate.Parameter parameter : template.getParameters()) {
+            String defaultValue = Optional.ofNullable(parameter.getDefaultValue()).map(v-> replaceAll(v, parameters) ).orElse(null);
             if (defaultValue != null && parameter.getType() == ProjectTemplate.ParameterType.javaPackage) {
                 defaultValue = defaultValue.trim().replace("-", ".").replace("\\.+", ".").toLowerCase();
             }
-            String value = promptParameter(parameter.getLabel(), defaultValue, parameter.getType().getPattern());
+            final String value = promptParameter(parameter.getLabel(), defaultValue, parameter.getType().getPattern());
             parameters.put(parameter.getName(), value);
             if (parameter.getType() == ProjectTemplate.ParameterType.javaPackage) {
                 parameters.put(parameter.getName() + "Path", value.replace(".", "/"));
@@ -81,7 +70,7 @@ public class ProjectSeeder {
 
         File outputDir;
         do {
-            String baseOutputDir = promptParameter("Base output dir", new File("..").getCanonicalFile().getAbsolutePath());
+            final String baseOutputDir = promptParameter("Base output dir", new File("..").getCanonicalFile().getAbsolutePath());
             outputDir = new File(baseOutputDir, projectName);
             if (outputDir.exists() && outputDir.listFiles() != null && outputDir.listFiles().length > 0) {
                 System.out.println(outputDir.getAbsolutePath() + " already exists, please chose another base output directory.");
@@ -92,19 +81,19 @@ public class ProjectSeeder {
         seedProject(template.getTemplateDir(), outputDir, parameters);
     }
 
-    private ProjectTemplate pickTemplate(List<ProjectTemplate> availableTemplates) {
-        Map<String, ProjectTemplate> templateMap = availableTemplates.stream()
+    private ProjectTemplate pickTemplate(final List<ProjectTemplate> availableTemplates) {
+        final Map<String, ProjectTemplate> templateMap = availableTemplates.stream()
                 .collect(Collectors.toMap(t -> t.getName().toLowerCase(), Function.identity()));
 
-        List<String> sortedTemplateNames = availableTemplates.stream()
+        final List<String> sortedTemplateNames = availableTemplates.stream()
                 .map(ProjectTemplate::getName)
                 .sorted()
                 .collect(Collectors.toList());
 
         String suggestedTemplateName = null;
         while (true) {
-            String templateName = promptParameter("Choose template", suggestedTemplateName);
-            ProjectTemplate template = templateMap.get(templateName.toLowerCase());
+            final String templateName = promptParameter("Choose template", suggestedTemplateName);
+            final ProjectTemplate template = templateMap.get(templateName.toLowerCase());
             if (template != null) {
                 return template;
             }
@@ -113,7 +102,7 @@ public class ProjectSeeder {
     }
 
     private static List<ProjectTemplate> getAvailableTemplates() {
-        File[] files = TEMPLATES_DIR.listFiles();
+        final File[] files = TEMPLATES_DIR.listFiles();
         if (files == null) {
             return Collections.emptyList();
         }
@@ -125,15 +114,15 @@ public class ProjectSeeder {
                 .collect(Collectors.toList());
     }
 
-    private static String promptParameter(String prompt, String defaultValue) {
+    private static String promptParameter(final String prompt, final String defaultValue) {
         return promptParameter(prompt, defaultValue, null);
     }
 
-    private static String promptParameter(String prompt, String defaultValue, Pattern pattern) {
-        Scanner scanner = new Scanner(System.in);
+    private static String promptParameter(final String prompt, final String defaultValue, final Pattern pattern) {
+        final Scanner scanner = new Scanner(System.in);
         String input = null;
         while (input == null) {
-            System.out.print(prompt + (defaultValue != null ? " (" + defaultValue + "): " : ": "));
+            System.out.print(ANSI_BOLD + prompt + ANSI_RESET + (defaultValue != null ? " (" + defaultValue + "): " : ": "));
             input = scanner.nextLine().trim();
             if (input.trim().length() == 0) {
                 input = defaultValue;
@@ -146,35 +135,35 @@ public class ProjectSeeder {
         return input;
     }
 
-    private void seedProject(File templateDir, File outputDir, Map<String, String> replacements) throws IOException {
+    private void seedProject(final File templateDir, final File outputDir, final Map<String, String> replacements) throws IOException {
         System.out.println();
         System.out.println("Seeding project...");
         System.out.println("Template dir: " + templateDir.getAbsolutePath());
         System.out.println("Output dir: " + outputDir.getAbsolutePath());
-        replacements.keySet().stream().sorted().forEach(k -> System.out.println("- "+k + ": " + replacements.get(k)));
+        replacements.keySet().stream().sorted().forEach(k -> System.out.println("- " +ANSI_BOLD+ k +ANSI_RESET+ ": " + replacements.get(k)));
 
-        String[] paths = templateDir.list();
+        final String[] paths = templateDir.list();
         if (paths != null) {
-            for (String path : paths) {
+            for (final String path : paths) {
                 process(templateDir, outputDir, path, replacements);
             }
         }
         System.out.println();
-        System.out.println("Project created at: " + outputDir.getAbsolutePath());
+        System.out.println("Project created at: " +ANSI_UNDERLINE+ outputDir.getAbsolutePath()+ANSI_RESET);
     }
 
-    private void process(File templateDir, File outputDir, String sourcePath, Map<String, String> replacements) throws IOException {
-        File file = new File(templateDir, sourcePath);
+    private void process(final File templateDir, final File outputDir, final String sourcePath, final Map<String, String> replacements) throws IOException {
+        final File file = new File(templateDir, sourcePath);
         if (file.getParentFile().equals(templateDir) && file.getName().equals("template.xml")) {
             return;
         }
-        File target = new File(outputDir, replaceAll(sourcePath, replacements));
+        final File target = new File(outputDir, replaceAll(sourcePath, replacements));
 
         if (file.isDirectory()) {
             target.mkdirs();
-            String[] paths = file.list();
+            final String[] paths = file.list();
             if (paths != null) {
-                for (String path : paths) {
+                for (final String path : paths) {
                     process(templateDir, outputDir, sourcePath + "/" + path, replacements);
                 }
             }
@@ -189,10 +178,10 @@ public class ProjectSeeder {
         }
     }
 
-    private void copyText(File src, File dst, Map<String, String> replacements) throws IOException {
+    private void copyText(final File src, final File dst, final Map<String, String> replacements) throws IOException {
 
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(src)))) {
-            try (BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(dst)))) {
+        try (final BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(src)))) {
+            try (final BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(dst)))) {
                 String line;
                 while ((line = reader.readLine()) != null) {
                     line = replaceAll(line, replacements);
@@ -203,10 +192,10 @@ public class ProjectSeeder {
         }
     }
 
-    private void copyBinary(File src, File dst) throws IOException {
-        byte[] buffer = new byte[0xFFF];
-        try (BufferedInputStream in = new BufferedInputStream(new FileInputStream(src.getCanonicalFile()))) {
-            try (BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream(dst.getCanonicalFile()))) {
+    private void copyBinary(final File src, final File dst) throws IOException {
+        final byte[] buffer = new byte[0xFFF];
+        try (final BufferedInputStream in = new BufferedInputStream(new FileInputStream(src.getCanonicalFile()))) {
+            try (final BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream(dst.getCanonicalFile()))) {
                 int read;
                 while ((read = in.read(buffer)) >= 0) {
                     out.write(buffer, 0, read);
@@ -216,11 +205,11 @@ public class ProjectSeeder {
         }
     }
 
-    private String replaceAll(String s, Map<String, String> replacements) {
+    private String replaceAll(String s, final Map<String, String> replacements) {
         if (s == null) {
             return s;
         }
-        for (String key : replacements.keySet()) {
+        for (final String key : replacements.keySet()) {
             s = s.replace("${" + key + "}", replacements.get(key));
         }
         return s;

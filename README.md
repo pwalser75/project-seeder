@@ -20,20 +20,20 @@ Usage example:
 ```
 Available templates:
 
-- Java
-  Simple Java 8 project with logging and test (JUnit/Mockito)
-
-- Webapp
-  Java web project with Servlets, Freemarker templates and a REST/JSON web service
-  
-- Spring-Boot
-  Spring Boot project with REST controller, service and repository
+- Documentation
+  AsciiDoc based documentation project with PDF/HTML5 output
 
 - JEE
   Multi-module Java EE 7 project
-  
-- Documentation
-  AsciiDoc based documentation project with PDF/HTML5 output
+
+- Java
+  Simple Java 8 project with logging and test (JUnit/Mockito)
+
+- Spring-Boot
+  Spring Boot project with REST controller, service and repository
+
+- Webapp
+  Java web project with Servlets, Freemarker templates and a REST/JSON web service
 
 Choose template: web
 Choose template (webapp):
@@ -47,12 +47,12 @@ Base output dir (D:\idx-workspace\project-seeder\..): d:\temp
 Seeding project...
 Template dir: D:\idx-workspace\project-seeder\templates\webapp
 Output dir: d:\temp\example-webservice
-basePackage: ch.frostnova.example.webservice
-basePackagePath: ch/frostnova/example/webservice
-projectDescription: example-webservice
-projectGroup: ch.frostnova
-projectName: example-webservice
-projectVersion: 2.0.0-SNAPSHOT
+- basePackage: ch.frostnova.example.webservice
+- basePackagePath: ch/frostnova/example/webservice
+- projectDescription: example-webservice
+- projectGroup: ch.frostnova
+- projectName: example-webservice
+- projectVersion: 2.0.0-SNAPSHOT
 .........
 Project created at: d:\temp\example-webservice
 ```
