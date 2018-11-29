@@ -39,7 +39,7 @@ Icons (from http://fontawesome.io/icons/)
 
 image::images/fruit/banana.jpg[Banana, width=320, height=320, scaledwidth=32%]
 
-image::http://frostnova.ch/temp/kitchen.jpg[]
+image::https://frostnova.ch/temp/kitchen.jpg[]
 
 == Code
 
