@@ -31,6 +31,8 @@ skinparam sequence {
 skinparam class {
     BackgroundColor white-#FBEA8C
     BackgroundColor<<Table>> white-AAD6E6
+    BackgroundColor<<Entity>> white-AAD6E6
+    BackgroundColor<<MappedSuperclass>> white-AAB5E6
 	ArrowColor #333344
 	BorderColor #333344
 	FontStyle bold
@@ -83,16 +85,26 @@ skinparam object {
 	BorderColor #333344
 	FontStyle bold
 }
+skinparam legend {
+    BackgroundColor white-#EEEEEE
+	BorderColor #CCCCCC
+}
 
 hide footbox
 
 !define Table(name,desc) class name as "desc" << (T,#AAD6E6) >> <<Table>>
-!define Table(name) class name << (T,#AAD6E6) >>
+!define Table(name) class name << (T,#AAD6E6) >> <<Table>>
+!define Entity(name,desc) class name as "desc" << (T,#AAD6E6) >> <<Entity>>
+!define Entity(name) class name << (T,#AAD6E6) >> <<Entity>>
+!define MappedSuperclass(name) class name << (M,#AAB5E6) >> <<MappedSuperclass>>
+!define MappedSuperclass(name,desc) class name as "desc" << (T,#AAB5E6) >> <<Entity>>
 !define primary_key(x) <&key> <b><color:#286ACD>x</color></b>
 !define foreign_key(x) <&share> <b><color:#0C7A79>x</color></b>
 !define id(x) <b>x</b>
 !define unique(x) <&tag> <b><u>x</u></b>
 !define not_null(x) <&tag> <b>x</b>
 !define column(x) <&chevron-right> <b>x</b>
+!define readonly(x) <i>x</i>
 
+!define synthetic(x) <&info> <color:#666666>x</color>
 !define reference(x) <color:#5A6E9C><u>x</u></color>

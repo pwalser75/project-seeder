@@ -1,5 +1,3 @@
-import com.sun.org.apache.xalan.internal.xsltc.compiler.Copy
-
 buildscript {
     repositories {
         jcenter()
@@ -55,6 +53,8 @@ tasks.withType(org.asciidoctor.gradle.AsciidoctorTask) { docTask ->
 
 
 task generateHTML(type: org.asciidoctor.gradle.AsciidoctorTask) {
+    group = 'Asciidoc'
+    description = 'Generate HTML5 documentation'
     backends = ['html5']
     dependsOn copyHtmlImages
     attributes \
@@ -64,7 +64,9 @@ task generateHTML(type: org.asciidoctor.gradle.AsciidoctorTask) {
 }
 
 task generatePDF(type: org.asciidoctor.gradle.AsciidoctorTask) {
-    backends = ['html5']
+    group = 'Asciidoc'
+    description = 'Generate PDF documentation'
+    backends = ['pdf']
     dependsOn copyPdfImages
     mustRunAfter copyPdfImages
     attributes  \
@@ -73,7 +75,6 @@ task generatePDF(type: org.asciidoctor.gradle.AsciidoctorTask) {
         'pdf-fontsdir': "theme/fonts",
         'imagesdir': file('build/docs/pdf/images').path,
         'source-highlighter': 'coderay'
-    backends = ['pdf']
 }
 
 task pdfArchives(type: Copy) {

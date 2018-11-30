@@ -1,6 +1,5 @@
 package ch.frostnova.app;
 
-
 import java.io.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -22,10 +21,6 @@ public class ProjectSeeder {
     private final static DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     private final static DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
-    private final static String ANSI_RESET = "\u001B[0m";
-    private final static String ANSI_BOLD = "\u001B[1m";
-    private final static String ANSI_UNDERLINE = "\u001B[4m";
-
     public static void main(final String[] args) throws IOException {
 
         System.out.println(TEMPLATES_DIR.getAbsolutePath());
@@ -33,6 +28,7 @@ public class ProjectSeeder {
     }
 
     public ProjectSeeder() throws IOException {
+
         runProjectWizard();
     }
 
@@ -43,7 +39,7 @@ public class ProjectSeeder {
             return;
         }
         System.out.println("Available templates:\n");
-        availableTemplates.forEach(t -> System.out.println("- " + ANSI_BOLD + ANSI_UNDERLINE + t.getName() + ANSI_RESET + "\n  " + t.getDescription() + "\n"));
+        availableTemplates.forEach(t -> System.out.println("* " + t.getName() + "\n  " + t.getDescription() + "\n"));
 
         final ProjectTemplate template = pickTemplate(availableTemplates);
         final Map<String, String> parameters = new HashMap<>();
@@ -56,7 +52,7 @@ public class ProjectSeeder {
         parameters.put("projectName", projectName);
 
         for (final ProjectTemplate.Parameter parameter : template.getParameters()) {
-            String defaultValue = Optional.ofNullable(parameter.getDefaultValue()).map(v-> replaceAll(v, parameters) ).orElse(null);
+            String defaultValue = Optional.ofNullable(parameter.getDefaultValue()).map(v -> replaceAll(v, parameters)).orElse(null);
             if (defaultValue != null && parameter.getType() == ProjectTemplate.ParameterType.javaPackage) {
                 defaultValue = defaultValue.trim().replace("-", ".").replace("\\.+", ".").toLowerCase();
             }
@@ -66,7 +62,6 @@ public class ProjectSeeder {
                 parameters.put(parameter.getName() + "Path", value.replace(".", "/"));
             }
         }
-
 
         File outputDir;
         do {
@@ -122,7 +117,7 @@ public class ProjectSeeder {
         final Scanner scanner = new Scanner(System.in);
         String input = null;
         while (input == null) {
-            System.out.print(ANSI_BOLD + prompt + ANSI_RESET + (defaultValue != null ? " (" + defaultValue + "): " : ": "));
+            System.out.print(prompt + (defaultValue != null ? " (" + defaultValue + "): " : ": "));
             input = scanner.nextLine().trim();
             if (input.trim().length() == 0) {
                 input = defaultValue;
@@ -140,7 +135,7 @@ public class ProjectSeeder {
         System.out.println("Seeding project...");
         System.out.println("Template dir: " + templateDir.getAbsolutePath());
         System.out.println("Output dir: " + outputDir.getAbsolutePath());
-        replacements.keySet().stream().sorted().forEach(k -> System.out.println("- " +ANSI_BOLD+ k +ANSI_RESET+ ": " + replacements.get(k)));
+        replacements.keySet().stream().sorted().forEach(k -> System.out.println("- " + k + ": " + replacements.get(k)));
 
         final String[] paths = templateDir.list();
         if (paths != null) {
@@ -149,7 +144,7 @@ public class ProjectSeeder {
             }
         }
         System.out.println();
-        System.out.println("Project created at: " +ANSI_UNDERLINE+ outputDir.getAbsolutePath()+ANSI_RESET);
+        System.out.println("Project created at: " + outputDir.getAbsolutePath());
     }
 
     private void process(final File templateDir, final File outputDir, final String sourcePath, final Map<String, String> replacements) throws IOException {
@@ -207,7 +202,7 @@ public class ProjectSeeder {
 
     private String replaceAll(String s, final Map<String, String> replacements) {
         if (s == null) {
-            return s;
+            return null;
         }
         for (final String key : replacements.keySet()) {
             s = s.replace("${" + key + "}", replacements.get(key));
