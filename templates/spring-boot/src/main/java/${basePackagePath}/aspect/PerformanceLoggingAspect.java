@@ -11,15 +11,14 @@ import org.springframework.stereotype.Component;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Deque;
+import java.util.Iterator;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
 
 /**
- * Performance logging aspect, logs performance and result state (ok or exception) for (nested) service calls.<br>
- * Activated by profile
+ * Performance logging aspect, logs performance and result state (ok or exception) for (nested) service calls.<br> Activated by profile
  * <code>performance-logging</code>, the aspect will log performance for any
  * <ul>
  * <li>classes annotated with <code>@PerformanceLogging</code></li>
@@ -32,9 +31,7 @@ import java.util.stream.Collectors;
  * <pre><code>
  * 15:12:22.316 INFO  [main] | PerformanceLoggingAspect - Test.a() &rarr; 211.20 ms, self: 51.30 ms
  * &nbsp;&nbsp;&lfloor; Test.b() &rarr; java.lang.IllegalArgumentException, 134.04 ms, self: 102.04 ms
- * &nbsp;&nbsp;&nbsp;&nbsp;&lfloor; Test.c() &rarr; 11.01 ms
- * &nbsp;&nbsp;&nbsp;&nbsp;&lfloor; Test.c() &rarr; 10.01 ms
- * &nbsp;&nbsp;&nbsp;&nbsp;&lfloor; Test.c() &rarr; 10.95 ms
+ * &nbsp;&nbsp;&nbsp;&nbsp;&lfloor; 5x Test.c() &rarr; 51.94 ms
  * &nbsp;&nbsp;&nbsp;&nbsp;&lfloor; Test.d() &rarr; java.lang.ArithmeticException, 0.03 ms
  * &nbsp;&nbsp;&lfloor; Test.e() &rarr; 25.86 ms
  * 15:12:22.339 INFO  [main] | PerformanceLoggingAspect - Other.x() &rarr; 12.55 ms, self: 2.57 ms
@@ -49,14 +46,17 @@ public class PerformanceLoggingAspect {
 
     private static Logger log = LoggerFactory.getLogger(PerformanceLoggingAspect.class);
 
-     /**
+    private final static String SYMBOL_INDENTATION = "+"; // unicode alternative: "\u2937"
+    private final static String SYMBOL_RIGHT_ARROW = "->"; // unicode alternative: "\u2192"
+
+    /**
      * Bind aspect to any Spring @Service, @Controller, @RestController and Repository
      *
      * @param joinPoint aspect join point
      * @return invocation result
      * @throws Throwable invocation exception
      */
-    @Around("@within(${basePackage}.aspect.PerformanceLogging) " +
+    @Around("@within(org.test.spring.boot.project.aspect.PerformanceLogging) " +
             "|| @within(org.springframework.stereotype.Service) " +
             "|| @within(org.springframework.stereotype.Controller) " +
             "|| @within(org.springframework.web.bind.annotation.RestController) " +
@@ -80,7 +80,7 @@ public class PerformanceLoggingAspect {
 
         private final static ThreadLocal<PerformanceLoggingContext> current = new ThreadLocal<>();
 
-        private final List<InvocationInfo> invocations = new LinkedList<>();
+        private final Deque<InvocationInfo> invocations = new LinkedList<>();
         private final Deque<InvocationInfo> invocationStack = new LinkedList<>();
         private final Deque<AtomicLong> nestedTime = new LinkedList<>();
 
@@ -91,6 +91,10 @@ public class PerformanceLoggingAspect {
                 current.set(context);
             }
             return context;
+        }
+
+        public boolean isIntermediateInvocation() {
+            return invocationStack.size() > 0;
         }
 
         public void enter(String invocation) {
@@ -118,6 +122,18 @@ public class PerformanceLoggingAspect {
             Optional.ofNullable(nestedTime.peek()).ifPresent(x -> x.addAndGet(info.getElapsedTimeNs()));
 
             if (invocationStack.isEmpty()) {
+
+                InvocationInfo previous = null;
+                Iterator<InvocationInfo> iterator = invocations.iterator();
+                while (iterator.hasNext()) {
+                    InvocationInfo invocationInfo = iterator.next();
+                    if (previous != null && previous.merge(invocationInfo)) {
+                        iterator.remove();
+                    } else {
+                        previous = invocationInfo;
+                    }
+                }
+
                 log.info(invocations.stream().map(InvocationInfo::toString).collect(Collectors.joining("\n")));
                 invocations.clear();
                 current.remove();
@@ -127,30 +143,41 @@ public class PerformanceLoggingAspect {
 
     private static class InvocationInfo {
 
+        private int mergeCount = 1;
         private final int level;
-        private final long startTimeNs;
+        private long startTimeNs;
         private long endTimeNs;
         private final String invocation;
         private String result;
         private long nestedTimeNs;
 
-        public InvocationInfo(int level, String invocation, long startTimeNs) {
+        InvocationInfo(int level, String invocation, long startTimeNs) {
             this.level = level;
             this.startTimeNs = startTimeNs;
             this.invocation = invocation;
         }
 
-        public void done(long endTimeNs, String result) {
+        void done(long endTimeNs, String result) {
             this.endTimeNs = endTimeNs;
             this.result = result;
         }
 
-        public long getElapsedTimeNs() {
+        long getElapsedTimeNs() {
             return endTimeNs - startTimeNs;
         }
 
-        public void setNestedTimeNs(long timeNs) {
+        void setNestedTimeNs(long timeNs) {
             nestedTimeNs = timeNs;
+        }
+
+        boolean merge(InvocationInfo other) {
+            if (other != null && nestedTimeNs == 0 && other.nestedTimeNs == 0 && level == other.level && invocation.equals(other.invocation)) {
+                startTimeNs = Math.min(startTimeNs, other.startTimeNs);
+                endTimeNs = Math.max(endTimeNs, other.endTimeNs);
+                mergeCount++;
+                return true;
+            }
+            return false;
         }
 
         @Override
@@ -163,11 +190,17 @@ public class PerformanceLoggingAspect {
                 for (int i = 0; i < level; i++) {
                     builder.append("  ");
                 }
-                builder.append("\u2937 ");
+                builder.append(SYMBOL_INDENTATION);
+                builder.append(" ");
             }
-
+            if (mergeCount > 1) {
+                builder.append(mergeCount);
+                builder.append("x ");
+            }
             builder.append(invocation);
-            builder.append(" \u2192 ");
+            builder.append(" ");
+            builder.append(SYMBOL_RIGHT_ARROW);
+            builder.append(" ");
             if (result != null) {
                 builder.append(result);
                 builder.append(", ");
