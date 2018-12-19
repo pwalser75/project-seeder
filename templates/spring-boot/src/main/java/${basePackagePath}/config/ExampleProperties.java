@@ -20,6 +20,10 @@ public class ExampleProperties {
     private Set<String> e;
     private List<String> f;
 
+    private int x = 5;
+    private double y = 6.7;
+    private String z = "Aloha";
+
     public int getA() {
         return a;
     }
@@ -66,5 +70,29 @@ public class ExampleProperties {
 
     public void setF(List<String> f) {
         this.f = f;
+    }
+
+    public int getX() {
+        return x;
+    }
+
+    public void setX(int x) {
+        this.x = x;
+    }
+
+    public double getY() {
+        return y;
+    }
+
+    public void setY(double y) {
+        this.y = y;
+    }
+
+    public String getZ() {
+        return z;
+    }
+
+    public void setZ(String z) {
+        this.z = z;
     }
 }

@@ -15,6 +15,8 @@ import ${basePackage}.config.ExampleProperties;
 @SpringBootTest
 public class ConfigurationTest {
 
+    private final static double EPSILON = 1e-23;
+
     @Autowired
     private ExampleProperties exampleProperties;
 
@@ -22,8 +24,8 @@ public class ConfigurationTest {
     public void testConfigurationProperties() {
 
         Assert.assertNotNull(exampleProperties);
-        Assert.assertTrue(exampleProperties.getA() == 123);
-        Assert.assertTrue(exampleProperties.getB() == 123.456);
+        Assert.assertEquals(123, exampleProperties.getA());
+        Assert.assertEquals(123.456, exampleProperties.getB(), EPSILON);
         Assert.assertTrue(exampleProperties.isC());
         Assert.assertEquals("Test", exampleProperties.getD());
 
@@ -38,5 +40,14 @@ public class ConfigurationTest {
         Assert.assertEquals("first", exampleProperties.getF().get(0));
         Assert.assertEquals("second", exampleProperties.getF().get(1));
         Assert.assertEquals("third", exampleProperties.getF().get(2));
+    }
+
+    @Test
+    public void testDefaultProperties() {
+
+        Assert.assertNotNull(exampleProperties);
+        Assert.assertEquals(5, exampleProperties.getX());
+        Assert.assertEquals(6.7, exampleProperties.getY(), EPSILON);
+        Assert.assertEquals("Aloha", exampleProperties.getZ());
     }
 }

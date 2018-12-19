@@ -2,6 +2,7 @@ package ${basePackage}.ws.controller;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +28,7 @@ import java.util.NoSuchElementException;
         allowCredentials = "true",
         methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE, RequestMethod.OPTIONS, RequestMethod.HEAD},
         maxAge = 1209600)
-@Api(value = "Notes resource", produces = "application/json")
+@Api(value = "Notes resource", produces = "application/json", description = "Endpoints for reading/writing notes")
 @PerformanceLogging
 public class NotesController {
 
@@ -42,22 +43,25 @@ public class NotesController {
     @GetMapping(produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "Lists all notes", response = Note.class)
     @ApiResponses({
-            @ApiResponse(code = 200, message = "Successful")
+            @ApiResponse(code = 200, message = "ok")
     })
     public List<Note> list() {
         return noteService.list();
     }
 
     /**
-     * Get a record by id. If the record was not found, a NoSuchElementException will be thrown (resulting in a 404 NOT
-     * FOUND).
+     * Get a record by id. If the record was not found, a NoSuchElementException will be thrown (resulting in a 404 NOT FOUND).
      *
      * @param id id of the record
      * @return record
      */
     @GetMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "Get a specific note", response = Note.class)
-    public Note get(@PathVariable("id") long id) {
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "ok"),
+            @ApiResponse(code = 404, message = "not found")
+    })
+    public Note get(@ApiParam(value = "ID of the note to fetch", required = true) @PathVariable("id") long id) {
         Note result = noteService.get(id);
         if (result != null) {
             return result;
@@ -74,6 +78,10 @@ public class NotesController {
     @PostMapping(consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     @ApiOperation(value = "Create a new note", response = Note.class)
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "ok"),
+            @ApiResponse(code = 400, message = "bad request")
+    })
     public Note create(@RequestBody @Valid Note note) {
         note.setId(null);
         return noteService.save(note);
@@ -88,7 +96,12 @@ public class NotesController {
     @PutMapping(path = "/{id}", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @ApiOperation(value = "Update an existing note", response = Note.class)
-    public void update(@PathVariable("id") long id, @RequestBody @Valid Note note) {
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "OK"),
+            @ApiResponse(code = 400, message = "bad request"),
+            @ApiResponse(code = 404, message = "not found")
+    })
+    public void update(@ApiParam(value = "ID of the note to update", required = true) @PathVariable("id") long id, @RequestBody @Valid Note note) {
         note.setId(id);
         noteService.save(note);
     }
@@ -100,7 +113,8 @@ public class NotesController {
      */
     @DeleteMapping(path = "/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete(@PathVariable("id") long id) {
+    @ApiOperation(value = "Delete a note", response = Note.class)
+    public void delete(@ApiParam(value = "ID of the note to delete", required = true) @PathVariable("id") long id) {
         noteService.delete(id);
     }
 }
