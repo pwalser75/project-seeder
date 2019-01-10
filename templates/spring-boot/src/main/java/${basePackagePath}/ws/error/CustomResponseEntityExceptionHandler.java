@@ -1,4 +1,4 @@
-package ${basePackage}.ws;
+package ${basePackage}.ws.error;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
-import ${basePackage}.ws.error.ValidationErrors;
 
 /**
  * Customized response entity exception handler
@@ -20,7 +19,7 @@ public class CustomResponseEntityExceptionHandler extends ResponseEntityExceptio
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
                                                                   HttpHeaders headers, HttpStatus status, WebRequest request) {
-        ValidationErrors errorDetails = new ValidationErrors(ex.getBindingResult());
-        return new ResponseEntity(errorDetails, HttpStatus.BAD_REQUEST);
+        ValidationErrors errors = new ValidationErrors(ex.getBindingResult());
+        return new ResponseEntity(errors.getErrors(), HttpStatus.BAD_REQUEST);
     }
 }

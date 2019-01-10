@@ -6,10 +6,12 @@ import com.fasterxml.jackson.databind.introspect.JacksonAnnotationIntrospector;
 import com.fasterxml.jackson.databind.util.StdDateFormat;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 
 import javax.validation.*;
 import java.time.LocalDateTime;
+import java.util.Locale;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -18,6 +20,11 @@ import java.util.stream.Stream;
  * Tests for Note model
  */
 public class NoteTest {
+	
+	@Before
+    public void init() {
+        Locale.setDefault(Locale.ENGLISH);
+    }
 
     @Test
     public void testValidate() {

@@ -10,26 +10,26 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * Validation error details
+ * Validation errors
  */
 public class ValidationErrors {
 
-    @JsonProperty("errors")
-    private final List<ValidationError> fieldErrors = new LinkedList<>();
+   @JsonProperty("errors")
+    private final List<ValidationError> errors = new LinkedList<>();
 
     public ValidationErrors(ConstraintViolationException ex) {
         for (ConstraintViolation error : ex.getConstraintViolations()) {
-            fieldErrors.add(new ValidationError(error));
+            errors.add(new ValidationError(error));
         }
     }
 
     public ValidationErrors(BindingResult bindingResult) {
         for (ObjectError error : bindingResult.getAllErrors()) {
-            fieldErrors.add(new ValidationError(error));
+            errors.add(new ValidationError(error));
         }
     }
 
-    public List<ValidationError> getFieldErrors() {
-        return fieldErrors;
+    public List<ValidationError> getErrors() {
+        return errors;
     }
 }
