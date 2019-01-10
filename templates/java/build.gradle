@@ -54,21 +54,27 @@ dependencyUpdates.resolutionStrategy = {
     }
 }
 
+ext {
+    junitVersion = '4.12'
+    mockitoVersion = '2.23.4'
+    slf4jVersion = '1.7.25'
+    logbackVersion = '1.2.3'
 
-ext.libs = [
+    libs = [
         testbase: [
-                "junit:junit:4.12",
-                "org.mockito:mockito-core:2.18.0"
+                "junit:junit:${junitVersion}",
+                "org.mockito:mockito-core:${mockitoVersion}"
         ],
         loggingAPI   : [
-                "org.slf4j:slf4j-api:1.7.25"
+                "org.slf4j:slf4j-api:${slf4jVersion}"
         ],
         loggingImpl  : [
-                "org.slf4j:jcl-over-slf4j:1.7.25",
-                "org.slf4j:jul-to-slf4j:1.7.25",
-                "ch.qos.logback:logback-classic:1.2.3"
+                "org.slf4j:jcl-over-slf4j:${slf4jVersion}",
+                "org.slf4j:jul-to-slf4j:${slf4jVersion}",
+                "ch.qos.logback:logback-classic:${logbackVersion}"
         ]
-]
+	]
+}
 
 dependencies {
     testCompile libs.testbase
