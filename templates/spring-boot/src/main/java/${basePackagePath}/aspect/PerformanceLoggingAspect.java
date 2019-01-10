@@ -56,7 +56,7 @@ public class PerformanceLoggingAspect {
      * @return invocation result
      * @throws Throwable invocation exception
      */
-    @Around("@within(org.test.spring.boot.project.aspect.PerformanceLogging) " +
+    @Around("@within(${basePackage}.aspect.PerformanceLogging) " +
             "|| @within(org.springframework.stereotype.Service) " +
             "|| @within(org.springframework.stereotype.Controller) " +
             "|| @within(org.springframework.web.bind.annotation.RestController) " +

@@ -8,7 +8,9 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 import ${basePackage}.api.exception.ResourceNotFoundException;
+import ${basePackage}.ws.error.ValidationErrors;
 
+import javax.validation.ConstraintViolationException;
 import java.util.NoSuchElementException;
 
 /**
@@ -27,5 +29,11 @@ public class ExceptionHandlerAdvice extends ResponseEntityExceptionHandler {
     protected ResponseEntity<Object> handleBadRequest(RuntimeException ex, WebRequest request) {
         String bodyOfResponse = ex.getMessage();
         return handleExceptionInternal(ex, bodyOfResponse, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
+    }
+
+    @ExceptionHandler(ConstraintViolationException.class)
+    protected ResponseEntity<Object> handleBadRequest(ConstraintViolationException ex, WebRequest request) {
+        ValidationErrors errorDetails = new ValidationErrors(ex);
+        return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
     }
 }
