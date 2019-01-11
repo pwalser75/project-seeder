@@ -48,6 +48,12 @@ To build this project with Gradle:
     
     gradle bootRun
 
-## API doc (Swagger)
+## API Documentation (Swagger)
 
 API documentation reachable at [https://localhost/swagger-ui.html](https://localhost/swagger-ui.html)
+
+## Actuator Endpoints
+
+* Info: [https://localhost/info](https://localhost/info)
+* Health: [https://localhost/info](https://localhost/health)
+* Metrics: [https://localhost/info](https://localhost/metrics)

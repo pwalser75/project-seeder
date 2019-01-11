@@ -1,3 +1,4 @@
+# TLS configuration - enable HTTPS
 server:
   port: 443
   ssl: &serverssl
@@ -10,9 +11,10 @@ server:
     key-store-password: "keystore"
     key-password: "keystore"
 
-# HTTP port for redirection to HTTPS
+# HTTP port for redirection to HTTPS - uncomment to activate
 # http.server.port: 80
 
+# Persistence: datasource/JPA configuration
 spring.datasource:
   url: jdbc:h2:mem:testdb;DB_CLOSE_ON_EXIT=FALSE
   username: sa
@@ -24,6 +26,21 @@ spring.jpa:
   hibernate.dialect: org.hibernate.dialect.H2Dialect
   open-in-view: false
 
+# Actuator configuration, expose /health, /info and /metrics endpoints
+management:
+  endpoints:
+    web:
+      base-path: /
+      exposure.include: health,info,metrics
+  endpoint.health.show-details: always
+
+info:
+  app:
+    name: "${projectName}"
+    description: "${projectDescription}"
+    version: "${projectVersion}"
+
+# Custom application properties
 app:
   test:
     a: 123

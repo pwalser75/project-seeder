@@ -16,7 +16,7 @@ import java.util.stream.Stream;
 public class ProjectSeeder {
 
     private final static File TEMPLATES_DIR = new File("templates");
-    private final static List<String> FILTER_FILE_SUFFIXES = Arrays.asList("txt", "md", "xml", "java", "gradle", "ts", "js", "json", "adoc", "puml", "gitignore");
+    private final static List<String> FILTER_FILE_SUFFIXES = Arrays.asList("txt", "md", "xml", "java", "gradle", "ts", "js", "json", "yaml", "yml", "adoc", "puml", "html", "css", "gitignore");
 
     private final static DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     private final static DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
