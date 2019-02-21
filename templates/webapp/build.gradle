@@ -108,8 +108,9 @@ cargo {
         configHomeDir = confDir
 
         installer {
-            installUrl = "https://www-eu.apache.org/dist/tomcat/tomcat-9/v9.0.13/bin/apache-tomcat-9.0.13.zip"
-            downloadDir = file("container/download")
+            // make sure you pick a tomcat version from the archives, as the main download site and mirrors only feature the most recent version.
+            installUrl = "https://archive.apache.org/dist/tomcat/tomcat-9/v9.0.13/bin/apache-tomcat-9.0.13.zip"
+			downloadDir = file("container/download")
             extractDir = file("container/extract")
         }
     }
