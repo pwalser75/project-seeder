@@ -137,6 +137,7 @@ public class ProjectSeeder {
         System.out.println("Output dir: " + outputDir.getAbsolutePath());
         replacements.keySet().stream().sorted().forEach(k -> System.out.println("- " + k + ": " + replacements.get(k)));
 
+        outputDir.mkdirs();
         final String[] paths = templateDir.list();
         if (paths != null) {
             for (final String path : paths) {
