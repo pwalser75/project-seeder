@@ -2,14 +2,26 @@
 
 !include ../../theme/styles.iuml
 
-Alice -> Bob: Greeting
-Bob --> Bob: recognize Alice
-Bob -> Alice: Greeting
+actor "User" as user
+participant "Frontend Application" as frontend
+participant "WAF/IAM" as waf
+participant "Backend Application" as backend
+database "Persistence" as db
 
-note right
-    optional handshake protocol
-end note
-Alice -> Bob: State opinion about weather
-Alice <- Bob: Query well-being of family
+user -> frontend: start
+frontend -> waf: login
+waf --> user: show login form \n(prompt for credentials)
+user -> waf: login (credentials)
+waf --> frontend: logged in (session or bearer token)
+
+frontend -> waf: request (session or bearer token)
+activate frontend
+waf -> backend: forward request (JWT)
+activate backend
+backend --> backend: extract login user + roles from JWT
+backend -> db: query data
+backend --> frontend: response
+deactivate backend
+deactivate frontend
 
 @enduml

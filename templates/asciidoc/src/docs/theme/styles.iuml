@@ -15,18 +15,24 @@ skinparam package {
 	BorderColor #111122
 }
 skinparam sequence {
+    ParticipantPadding 20
+    BoxPadding 10
     MessageAlign center
-    ArrowColor #983D61
-    ActorBackgroundColor #B1E2C1
-    ActorBorderColor #96BBAB
+    ArrowColor #BFD700
+    ActorBackgroundColor #7971C0
+    ActorBorderColor #5956AC
     LifeLineBackgroundColor #DDDDDD
     LifeLineBorderColor #CCCCCC
-    ParticipantBackgroundColor #c0d7ea
-    ParticipantBorderColor #004D9F
+    ParticipantFontColor #FFFFFF
+    ParticipantBackgroundColor #0087D5
+    ParticipantBorderColor #005A87
     ParticipantFontStyle bold
     BoxBackgroundColor #D9E0FA
     BoxBorderColor #3e77a7
-    ParticipantBackgroundColor #white-#a0afc5
+}
+skinparam {
+    DatabaseBackgroundColor #FBD64B
+    DatabaseBorderColor #FFBC00
 }
 skinparam class {
     BackgroundColor white-#FBEA8C
