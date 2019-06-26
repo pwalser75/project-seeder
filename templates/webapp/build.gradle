@@ -4,7 +4,7 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.bmuschko:gradle-cargo-plugin:2.3'
+        classpath 'com.bmuschko:gradle-cargo-plugin:2.6.1'
     }
 }
 
@@ -31,16 +31,12 @@ tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
 }
 
-def dateTimeFormat = java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
-def buildDate = java.time.LocalDateTime.now()
-
 war {
     archiveName 'webapp-project.war'
     manifest {
         attributes(
                 "Name": project.name,
-                "Version": project.version,
-                "Build-Date": dateTimeFormat.format(buildDate)
+                "Version": project.version
         )
     }
 }
@@ -94,6 +90,14 @@ dependencies {
 
 def confDir=mkdir(file("container/config"))
 
+configurations {
+    tomcat
+}
+
+dependencies {
+    tomcat "org.apache.tomcat:tomcat:9.0.14@zip"
+}
+
 cargo {
 
     containerId = 'tomcat9x'
@@ -108,8 +112,7 @@ cargo {
         configHomeDir = confDir
 
         installer {
-            // make sure you pick a tomcat version from the archives, as the main download site and mirrors only feature the most recent version.
-            installUrl = "https://archive.apache.org/dist/tomcat/tomcat-9/v9.0.13/bin/apache-tomcat-9.0.13.zip"
+            installConfiguration = configurations.tomcat
 			downloadDir = file("container/download")
             extractDir = file("container/extract")
         }
@@ -130,7 +133,8 @@ task deploy (dependsOn: ['clean', 'build', 'cargoRedeployRemote']) {
     description = 'Build the WAR and deploy it to an existing Tomcat installation'
 }
 
-task run (dependsOn: ['clean', 'build', 'cargoRunLocal']) {
+task run (dependsOn: ['clean', 'assemble', 'cargoRunLocal']) {
+    logging.captureStandardOutput LogLevel.INFO
     group = 'Deploy'
     description = 'Build the WAR and deploy it to a local Tomcat installation'
 }
