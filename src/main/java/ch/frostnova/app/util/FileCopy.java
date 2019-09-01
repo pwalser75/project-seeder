@@ -6,7 +6,7 @@ import java.util.Map;
 
 public final class FileCopy {
 
-    private FileCopy(){
+    private FileCopy() {
 
     }
 
@@ -14,10 +14,15 @@ public final class FileCopy {
 
         try (final BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(src)))) {
             try (final BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(dst)))) {
+
+                boolean firstLine = true;
                 String line;
                 while ((line = reader.readLine()) != null) {
-                    line = StringUtil.replaceAll(line, replacements);
-                    writer.write(line + "\n");
+                    if (!firstLine) {
+                        writer.write("\n");
+                    }
+                    firstLine = false;
+                    writer.write(StringUtil.replaceAll(line, replacements));
                 }
                 writer.flush();
             }

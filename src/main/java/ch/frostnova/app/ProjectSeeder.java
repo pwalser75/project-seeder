@@ -52,17 +52,17 @@ public class ProjectSeeder {
         parameters.put("datetime", LocalDateTime.now().format(DATE_TIME_FORMATTER));
         parameters.put("template.name", template.getName());
         parameters.put("template.description", template.getDescription());
-        final String projectName = CommandLineUtil.promptValue("Project name", template.getName().toLowerCase().replaceAll("\\s+", "-") + "-project", ProjectTemplate.ParameterType.IDENTIFIER.getPattern());
+        final String projectName = CommandLineUtil.promptValue("Project name", template.getName().toLowerCase().replaceAll("\\s+", "-") + "-project", ProjectTemplate.ParameterType.identifier.getPattern());
         parameters.put("projectName", projectName);
 
         for (final ProjectTemplate.Parameter parameter : template.getParameters()) {
             String defaultValue = Optional.ofNullable(parameter.getDefaultValue()).map(v -> StringUtil.replaceAll(v, parameters)).orElse(null);
-            if (defaultValue != null && parameter.getType() == ProjectTemplate.ParameterType.JAVA_PACKAGE) {
+            if (defaultValue != null && parameter.getType() == ProjectTemplate.ParameterType.javaPackage) {
                 defaultValue = defaultValue.trim().replace("-", ".").replace("\\.+", ".").toLowerCase();
             }
             final String value = CommandLineUtil.promptValue(parameter.getLabel(), defaultValue, parameter.getType().getPattern());
             parameters.put(parameter.getName(), value);
-            if (parameter.getType() == ProjectTemplate.ParameterType.JAVA_PACKAGE) {
+            if (parameter.getType() == ProjectTemplate.ParameterType.javaPackage) {
                 parameters.put(parameter.getName() + "Path", value.replace(".", "/"));
             }
         }
@@ -77,7 +77,7 @@ public class ProjectSeeder {
             }
         } while (outputDir == null);
 
-        seedProject(template.getTemplateDir(), outputDir, parameters);
+        seedProject(template, outputDir, parameters);
     }
 
     private ProjectTemplate pickTemplate(final List<ProjectTemplate> availableTemplates) {
@@ -113,25 +113,25 @@ public class ProjectSeeder {
                 .collect(Collectors.toList());
     }
 
-    private void seedProject(final File templateDir, final File outputDir, final Map<String, String> replacements) throws IOException {
+    private void seedProject(final ProjectTemplate projectTemplate, final File outputDir, final Map<String, String> replacements) throws IOException {
         System.out.println();
         System.out.println("Seeding project...");
-        System.out.println("Template dir: " + templateDir.getAbsolutePath());
+        System.out.println("Template dir: " + projectTemplate.getTemplateDir().getAbsolutePath());
         System.out.println("Output dir: " + outputDir.getAbsolutePath());
         replacements.keySet().stream().sorted().forEach(k -> System.out.println("- " + k + ": " + replacements.get(k)));
 
         outputDir.mkdirs();
-        final String[] paths = templateDir.list();
+        final String[] paths = projectTemplate.getTemplateDir().list();
         if (paths != null) {
             for (final String path : paths) {
-                process(templateDir, outputDir, path, replacements);
+                process(projectTemplate, projectTemplate.getTemplateDir(), outputDir, path, replacements);
             }
         }
         System.out.println();
         System.out.println("Project created at: " + outputDir.getAbsolutePath());
     }
 
-    private void process(final File templateDir, final File outputDir, final String sourcePath, final Map<String, String> replacements) throws IOException {
+    private void process(ProjectTemplate projectTemplate, final File templateDir, final File outputDir, final String sourcePath, final Map<String, String> replacements) throws IOException {
         final File file = new File(templateDir, sourcePath);
         if (file.getParentFile().equals(templateDir) && file.getName().equals("template.xml")) {
             return;
@@ -143,7 +143,7 @@ public class ProjectSeeder {
             final String[] paths = file.list();
             if (paths != null) {
                 for (final String path : paths) {
-                    process(templateDir, outputDir, sourcePath + "/" + path, replacements);
+                    process(projectTemplate, templateDir, outputDir, sourcePath + "/" + path, replacements);
                 }
             }
         } else if (file.canRead()) {

@@ -97,10 +97,10 @@ public class ProjectTemplate {
     }
 
     public enum ParameterType {
-        IDENTIFIER("\\p{Alnum}+([\\.\\-_]\\p{Alnum}+)*"),
-        VERSION("(\\d+(?:\\.\\d+)*.*)"),
-        TEXT(".+"),
-        JAVA_PACKAGE("([\\p{L}\\p{Sc}_][\\p{L}\\p{N}\\p{Sc}_]*\\.)*[\\p{L}\\p{Sc}_][\\p{L}\\p{N}\\p{Sc}_]*");
+        identifier("\\p{Alnum}+([\\.\\-_]\\p{Alnum}+)*"),
+        version("(\\d+(?:\\.\\d+)*.*)"),
+        text(".+"),
+        javaPackage("([\\p{L}\\p{Sc}_][\\p{L}\\p{N}\\p{Sc}_]*\\.)*[\\p{L}\\p{Sc}_][\\p{L}\\p{N}\\p{Sc}_]*");
 
         Pattern pattern;
 
