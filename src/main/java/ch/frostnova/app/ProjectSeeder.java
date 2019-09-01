@@ -1,12 +1,16 @@
 package ch.frostnova.app;
 
-import java.io.*;
+import ch.frostnova.app.util.CommandLineUtil;
+import ch.frostnova.app.util.FileCopy;
+import ch.frostnova.app.util.StringUtil;
+
+import java.io.File;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.function.Function;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -48,24 +52,24 @@ public class ProjectSeeder {
         parameters.put("datetime", LocalDateTime.now().format(DATE_TIME_FORMATTER));
         parameters.put("template.name", template.getName());
         parameters.put("template.description", template.getDescription());
-        final String projectName = promptParameter("Project name", template.getName().toLowerCase().replaceAll("\\s+", "-") + "-project", ProjectTemplate.ParameterType.identifier.getPattern());
+        final String projectName = CommandLineUtil.promptValue("Project name", template.getName().toLowerCase().replaceAll("\\s+", "-") + "-project", ProjectTemplate.ParameterType.IDENTIFIER.getPattern());
         parameters.put("projectName", projectName);
 
         for (final ProjectTemplate.Parameter parameter : template.getParameters()) {
-            String defaultValue = Optional.ofNullable(parameter.getDefaultValue()).map(v -> replaceAll(v, parameters)).orElse(null);
-            if (defaultValue != null && parameter.getType() == ProjectTemplate.ParameterType.javaPackage) {
+            String defaultValue = Optional.ofNullable(parameter.getDefaultValue()).map(v -> StringUtil.replaceAll(v, parameters)).orElse(null);
+            if (defaultValue != null && parameter.getType() == ProjectTemplate.ParameterType.JAVA_PACKAGE) {
                 defaultValue = defaultValue.trim().replace("-", ".").replace("\\.+", ".").toLowerCase();
             }
-            final String value = promptParameter(parameter.getLabel(), defaultValue, parameter.getType().getPattern());
+            final String value = CommandLineUtil.promptValue(parameter.getLabel(), defaultValue, parameter.getType().getPattern());
             parameters.put(parameter.getName(), value);
-            if (parameter.getType() == ProjectTemplate.ParameterType.javaPackage) {
+            if (parameter.getType() == ProjectTemplate.ParameterType.JAVA_PACKAGE) {
                 parameters.put(parameter.getName() + "Path", value.replace(".", "/"));
             }
         }
 
         File outputDir;
         do {
-            final String baseOutputDir = promptParameter("Base output dir", new File("..").getCanonicalFile().getAbsolutePath());
+            final String baseOutputDir = CommandLineUtil.promptValue("Base output dir", new File("..").getCanonicalFile().getAbsolutePath());
             outputDir = new File(baseOutputDir, projectName);
             if (outputDir.exists() && outputDir.listFiles() != null && outputDir.listFiles().length > 0) {
                 System.out.println(outputDir.getAbsolutePath() + " already exists, please chose another base output directory.");
@@ -87,7 +91,7 @@ public class ProjectSeeder {
 
         String suggestedTemplateName = null;
         while (true) {
-            final String templateName = promptParameter("Choose template", suggestedTemplateName);
+            final String templateName = CommandLineUtil.promptValue("Choose template", suggestedTemplateName);
             final ProjectTemplate template = templateMap.get(templateName.toLowerCase());
             if (template != null) {
                 return template;
@@ -107,27 +111,6 @@ public class ProjectSeeder {
                 .map(ProjectTemplate::new)
                 .sorted(Comparator.comparing(ProjectTemplate::getName))
                 .collect(Collectors.toList());
-    }
-
-    private static String promptParameter(final String prompt, final String defaultValue) {
-        return promptParameter(prompt, defaultValue, null);
-    }
-
-    private static String promptParameter(final String prompt, final String defaultValue, final Pattern pattern) {
-        final Scanner scanner = new Scanner(System.in);
-        String input = null;
-        while (input == null) {
-            System.out.print(prompt + (defaultValue != null ? " (" + defaultValue + "): " : ": "));
-            input = scanner.nextLine().trim();
-            if (input.trim().length() == 0) {
-                input = defaultValue;
-            }
-            if (input != null && pattern != null && !pattern.matcher(input).matches()) {
-                System.out.println("   [!] invalid format, expected: " + pattern.pattern());
-                input = null;
-            }
-        }
-        return input;
     }
 
     private void seedProject(final File templateDir, final File outputDir, final Map<String, String> replacements) throws IOException {
@@ -153,7 +136,7 @@ public class ProjectSeeder {
         if (file.getParentFile().equals(templateDir) && file.getName().equals("template.xml")) {
             return;
         }
-        final File target = new File(outputDir, replaceAll(sourcePath, replacements));
+        final File target = new File(outputDir, StringUtil.replaceAll(sourcePath, replacements));
 
         if (file.isDirectory()) {
             target.mkdirs();
@@ -167,47 +150,10 @@ public class ProjectSeeder {
             System.out.print('.');
             if (FILTER_FILE_SUFFIXES.stream().anyMatch(s -> target.getName().endsWith("." + s))) {
                 target.getParentFile().mkdirs();
-                copyText(file, target, replacements);
+                FileCopy.copyText(file, target, replacements);
             } else {
-                copyBinary(file, target);
+                FileCopy.copyBinary(file, target);
             }
         }
-    }
-
-    private void copyText(final File src, final File dst, final Map<String, String> replacements) throws IOException {
-
-        try (final BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(src)))) {
-            try (final BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(dst)))) {
-                String line;
-                while ((line = reader.readLine()) != null) {
-                    line = replaceAll(line, replacements);
-                    writer.write(line + "\n");
-                }
-                writer.flush();
-            }
-        }
-    }
-
-    private void copyBinary(final File src, final File dst) throws IOException {
-        final byte[] buffer = new byte[0xFFF];
-        try (final BufferedInputStream in = new BufferedInputStream(new FileInputStream(src.getCanonicalFile()))) {
-            try (final BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream(dst.getCanonicalFile()))) {
-                int read;
-                while ((read = in.read(buffer)) >= 0) {
-                    out.write(buffer, 0, read);
-                }
-                out.flush();
-            }
-        }
-    }
-
-    private String replaceAll(String s, final Map<String, String> replacements) {
-        if (s == null) {
-            return null;
-        }
-        for (final String key : replacements.keySet()) {
-            s = s.replace("${" + key + "}", replacements.get(key));
-        }
-        return s;
     }
 }

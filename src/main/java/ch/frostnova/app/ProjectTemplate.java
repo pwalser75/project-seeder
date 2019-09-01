@@ -24,7 +24,7 @@ public class ProjectTemplate {
     private final List<Parameter> parameters = new LinkedList<>();
     private final File templateDir;
 
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) {
         ProjectTemplate template = new ProjectTemplate(new File("templates/simple"));
         System.out.println("Name: " + template.getName());
         System.out.println("Description: " + template.getDescription());
@@ -39,10 +39,10 @@ public class ProjectTemplate {
      */
     public ProjectTemplate(File directory) {
 
-        if (directory==null || !directory.exists() || !directory.isDirectory()) {
+        if (directory == null || !directory.exists() || !directory.isDirectory()) {
             throw new IllegalArgumentException(directory + " does not exist, or is not a directory");
         }
-        templateDir=directory;
+        templateDir = directory;
         File xmlFile = new File(directory, "template.xml");
         if (!xmlFile.exists() || !xmlFile.isFile() || !xmlFile.canRead()) {
             throw new IllegalArgumentException(xmlFile.getAbsolutePath() + " cannot be read");
@@ -59,8 +59,8 @@ public class ProjectTemplate {
             XMLNode descriptionNode = root.getChild("description");
             XMLNode parameterNodes = root.getChild("parameters");
 
-            this.name = nameNode != null ? nameNode.getTrimmedText() : null;
-            this.description = descriptionNode != null ? descriptionNode.getTrimmedText() : null;
+            name = nameNode != null ? nameNode.getTrimmedText() : null;
+            description = descriptionNode != null ? descriptionNode.getTrimmedText() : null;
             if (parameterNodes != null) {
                 for (XMLNode parameterNode : parameterNodes.getChildren("parameter")) {
                     parameters.add(new Parameter(parameterNode.getAttribute("name"),
@@ -97,10 +97,10 @@ public class ProjectTemplate {
     }
 
     public enum ParameterType {
-        identifier("\\p{Alnum}+([\\.\\-_]\\p{Alnum}+)*"),
-        version("(\\d+(?:\\.\\d+)*.*)"),
-        text(".+"),
-        javaPackage("([\\p{L}\\p{Sc}_][\\p{L}\\p{N}\\p{Sc}_]*\\.)*[\\p{L}\\p{Sc}_][\\p{L}\\p{N}\\p{Sc}_]*");
+        IDENTIFIER("\\p{Alnum}+([\\.\\-_]\\p{Alnum}+)*"),
+        VERSION("(\\d+(?:\\.\\d+)*.*)"),
+        TEXT(".+"),
+        JAVA_PACKAGE("([\\p{L}\\p{Sc}_][\\p{L}\\p{N}\\p{Sc}_]*\\.)*[\\p{L}\\p{Sc}_][\\p{L}\\p{N}\\p{Sc}_]*");
 
         Pattern pattern;
 
