@@ -25,74 +25,93 @@ public class ProjectSeeder {
     private final static DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     private final static DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
-    public static void main(final String[] args) throws IOException {
+    private final static String PARAM_USER = "user";
+    private final static String PARAM_DATE = "date";
+    private final static String PARAM_DATE_TIME = "datetime";
+    private final static String PARAM_TEMPLATE_NAME = "template.name";
+    private final static String PARAM_TEMPLATE_DESCRIPTION = "template.description";
+    private final static String PARAM_PROJECT_NAME = "projectName";
 
-        System.out.println(TEMPLATES_DIR.getAbsolutePath());
+    private final static String ANSI_RESET = "\u001b[0m";
+    private final static String ANSI_BOLD = "\u001b[1m";
+    private final static String ANSI_UNDERLINE = "\u001b[4m";
+    private final static String BULLET = "\u00bb";
+
+    public static void main(String[] args) throws IOException {
         new ProjectSeeder();
     }
 
     public ProjectSeeder() throws IOException {
-
-        runProjectWizard();
+        ProjectTemplate template = selectTemplate();
+        Map<String, String> parameters = parameterize(template);
+        File outputDir = selectOutputDir(parameters);
+        seedProject(template, outputDir, parameters);
     }
 
-    private void runProjectWizard() throws IOException {
-        final List<ProjectTemplate> availableTemplates = getAvailableTemplates();
+    private ProjectTemplate selectTemplate() {
+
+        List<ProjectTemplate> availableTemplates = getAvailableTemplates();
         if (availableTemplates.isEmpty()) {
             System.err.println("No templates available");
-            return;
+            System.exit(1);
         }
         System.out.println("Available templates:\n");
-        availableTemplates.forEach(t -> System.out.println("* " + t.getName() + "\n  " + t.getDescription() + "\n"));
+        availableTemplates.forEach(t -> System.out.println(BULLET + " " + ANSI_BOLD + t.getName() + ANSI_RESET
+                + "\n  " + t.getDescription() + "\n"));
 
-        final ProjectTemplate template = pickTemplate(availableTemplates);
-        final Map<String, String> parameters = new HashMap<>();
-        parameters.put("user", System.getProperty("user.name"));
-        parameters.put("date", LocalDate.now().format(DATE_FORMATTER));
-        parameters.put("datetime", LocalDateTime.now().format(DATE_TIME_FORMATTER));
-        parameters.put("template.name", template.getName());
-        parameters.put("template.description", template.getDescription());
-        final String projectName = CommandLineUtil.promptValue("Project name", template.getName().toLowerCase().replaceAll("\\s+", "-") + "-project", ProjectTemplate.ParameterType.identifier.getPattern());
-        parameters.put("projectName", projectName);
+        return pickTemplate(availableTemplates);
+    }
 
-        for (final ProjectTemplate.Parameter parameter : template.getParameters()) {
+    private Map<String, String> parameterize(ProjectTemplate template) {
+        Map<String, String> parameters = new HashMap<>();
+        parameters.put(PARAM_TEMPLATE_NAME, template.getName());
+        parameters.put(PARAM_USER, System.getProperty("user.name"));
+        parameters.put(PARAM_DATE, LocalDate.now().format(DATE_FORMATTER));
+        parameters.put(PARAM_DATE_TIME, LocalDateTime.now().format(DATE_TIME_FORMATTER));
+        parameters.put(PARAM_TEMPLATE_DESCRIPTION, template.getDescription());
+        String projectName = CommandLineUtil.promptValue("Project name", template.getName().toLowerCase().replaceAll("\\s+", "-") + "-project", ProjectTemplate.ParameterType.identifier.getPattern());
+        parameters.put(PARAM_PROJECT_NAME, projectName);
+
+        for (ProjectTemplate.Parameter parameter : template.getParameters()) {
             String defaultValue = Optional.ofNullable(parameter.getDefaultValue()).map(v -> StringUtil.replaceAll(v, parameters)).orElse(null);
             if (defaultValue != null && parameter.getType() == ProjectTemplate.ParameterType.javaPackage) {
                 defaultValue = defaultValue.trim().replace("-", ".").replace("\\.+", ".").toLowerCase();
             }
-            final String value = CommandLineUtil.promptValue(parameter.getLabel(), defaultValue, parameter.getType().getPattern());
+            String value = CommandLineUtil.promptValue(parameter.getLabel(), defaultValue, parameter.getType().getPattern());
             parameters.put(parameter.getName(), value);
             if (parameter.getType() == ProjectTemplate.ParameterType.javaPackage) {
                 parameters.put(parameter.getName() + "Path", value.replace(".", "/"));
             }
         }
+        return parameters;
+    }
 
+    private File selectOutputDir(Map<String, String> parameters) throws IOException {
         File outputDir;
         do {
-            final String baseOutputDir = CommandLineUtil.promptValue("Base output dir", new File("..").getCanonicalFile().getAbsolutePath());
-            outputDir = new File(baseOutputDir, projectName);
+            String baseOutputDir = CommandLineUtil.promptValue("Base output dir", new File("..").getCanonicalFile().getAbsolutePath());
+            outputDir = new File(baseOutputDir, parameters.get(PARAM_PROJECT_NAME));
             if (outputDir.exists() && outputDir.listFiles() != null && outputDir.listFiles().length > 0) {
                 System.out.println(outputDir.getAbsolutePath() + " already exists, please chose another base output directory.");
                 outputDir = null;
             }
         } while (outputDir == null);
-
-        seedProject(template, outputDir, parameters);
+        return outputDir;
     }
 
-    private ProjectTemplate pickTemplate(final List<ProjectTemplate> availableTemplates) {
-        final Map<String, ProjectTemplate> templateMap = availableTemplates.stream()
+    private ProjectTemplate pickTemplate(List<ProjectTemplate> availableTemplates) {
+        Map<String, ProjectTemplate> templateMap = availableTemplates.stream()
                 .collect(Collectors.toMap(t -> t.getName().toLowerCase(), Function.identity()));
 
-        final List<String> sortedTemplateNames = availableTemplates.stream()
+        List<String> sortedTemplateNames = availableTemplates.stream()
                 .map(ProjectTemplate::getName)
                 .sorted()
                 .collect(Collectors.toList());
 
         String suggestedTemplateName = null;
         while (true) {
-            final String templateName = CommandLineUtil.promptValue("Choose template", suggestedTemplateName);
-            final ProjectTemplate template = templateMap.get(templateName.toLowerCase());
+            String templateName = CommandLineUtil.promptValue("Choose template", suggestedTemplateName);
+            ProjectTemplate template = templateMap.get(templateName.toLowerCase());
             if (template != null) {
                 return template;
             }
@@ -101,7 +120,7 @@ public class ProjectSeeder {
     }
 
     private static List<ProjectTemplate> getAvailableTemplates() {
-        final File[] files = TEMPLATES_DIR.listFiles();
+        File[] files = TEMPLATES_DIR.listFiles();
         if (files == null) {
             return Collections.emptyList();
         }
@@ -113,7 +132,7 @@ public class ProjectSeeder {
                 .collect(Collectors.toList());
     }
 
-    private void seedProject(final ProjectTemplate projectTemplate, final File outputDir, final Map<String, String> replacements) throws IOException {
+    private void seedProject(ProjectTemplate projectTemplate, File outputDir, Map<String, String> replacements) throws IOException {
         System.out.println();
         System.out.println("Seeding project...");
         System.out.println("Template dir: " + projectTemplate.getTemplateDir().getAbsolutePath());
@@ -121,9 +140,9 @@ public class ProjectSeeder {
         replacements.keySet().stream().sorted().forEach(k -> System.out.println("- " + k + ": " + replacements.get(k)));
 
         outputDir.mkdirs();
-        final String[] paths = projectTemplate.getTemplateDir().list();
+        String[] paths = projectTemplate.getTemplateDir().list();
         if (paths != null) {
-            for (final String path : paths) {
+            for (String path : paths) {
                 process(projectTemplate, projectTemplate.getTemplateDir(), outputDir, path, replacements);
             }
         }
@@ -131,18 +150,18 @@ public class ProjectSeeder {
         System.out.println("Project created at: " + outputDir.getAbsolutePath());
     }
 
-    private void process(ProjectTemplate projectTemplate, final File templateDir, final File outputDir, final String sourcePath, final Map<String, String> replacements) throws IOException {
-        final File file = new File(templateDir, sourcePath);
+    private void process(ProjectTemplate projectTemplate, File templateDir, File outputDir, String sourcePath, Map<String, String> replacements) throws IOException {
+        File file = new File(templateDir, sourcePath);
         if (file.getParentFile().equals(templateDir) && file.getName().equals("template.xml")) {
             return;
         }
-        final File target = new File(outputDir, StringUtil.replaceAll(sourcePath, replacements));
+        File target = new File(outputDir, StringUtil.replaceAll(sourcePath, replacements));
 
         if (file.isDirectory()) {
             target.mkdirs();
-            final String[] paths = file.list();
+            String[] paths = file.list();
             if (paths != null) {
-                for (final String path : paths) {
+                for (String path : paths) {
                     process(projectTemplate, templateDir, outputDir, sourcePath + "/" + path, replacements);
                 }
             }
