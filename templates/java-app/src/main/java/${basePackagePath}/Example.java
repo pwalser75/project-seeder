@@ -15,7 +15,6 @@ public class Example {
     }
 
     public Example() {
-
         log.info(getMessage());
     }
 

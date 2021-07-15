@@ -143,14 +143,14 @@ public class ProjectSeeder {
         String[] paths = projectTemplate.getTemplateDir().list();
         if (paths != null) {
             for (String path : paths) {
-                process(projectTemplate, projectTemplate.getTemplateDir(), outputDir, path, replacements);
+                process(projectTemplate.getTemplateDir(), outputDir, path, replacements);
             }
         }
         System.out.println();
         System.out.println("Project created at: " + outputDir.getAbsolutePath());
     }
 
-    private void process(ProjectTemplate projectTemplate, File templateDir, File outputDir, String sourcePath, Map<String, String> replacements) throws IOException {
+    private void process(File templateDir, File outputDir, String sourcePath, Map<String, String> replacements) throws IOException {
         File file = new File(templateDir, sourcePath);
         if (file.getParentFile().equals(templateDir) && file.getName().equals("template.xml")) {
             return;
@@ -162,7 +162,7 @@ public class ProjectSeeder {
             String[] paths = file.list();
             if (paths != null) {
                 for (String path : paths) {
-                    process(projectTemplate, templateDir, outputDir, sourcePath + "/" + path, replacements);
+                    process(templateDir, outputDir, sourcePath + "/" + path, replacements);
                 }
             }
         } else if (file.canRead()) {

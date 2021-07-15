@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <template>
-    <name>Java</name>
-    <description>Simple Java 8 project with logging and test (JUnit/Mockito)</description>
+    <name>Java-App</name>
+    <description>Java 11 standalone app (executable shadow jar) with JUnit5/AssertJ/Mockito and logging</description>
     <parameters>
         <parameter name="projectGroup" label="Project group" type="identifier" default="org.test"/>
         <parameter name="projectDescription" label="Project description" type="text" default="Example ${template.name} Project"/>
